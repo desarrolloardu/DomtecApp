@@ -1,0 +1,12 @@
+/* Empty. Add your own CSS if you like */
+.float-button {
+
+/*border-radius:15% 0 0 0;*/
+width: auto;
+padding: 25px;
+
+position: fixed;
+bottom: 5%; /* Adjust height */
+right: 5%; /* Adjust position */
+z-index: 1000;
+}

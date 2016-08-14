@@ -1,0 +1,44 @@
+<ion-view view-title="Alta Dispositivo">
+  <ion-content>
+    <h1>Alta Dispositivo</h1>
+	
+	<div class="list">
+	
+  <label class="item item-input item-floating-label ">
+    <span class="input-label">Nombre</span>
+    <input ng-model="di.nombre" type="text" placeholder="Nombre">
+  </label>
+  <label class="item item-input item-floating-label">
+    <span class="input-label">Descripcion</span>
+    <input ng-model="di.descripcion" type="text" placeholder="Descripcion">
+  </label>
+
+  <span class="input-label">Imagen</span>
+	<a class="item item-thumbnail-left" ng-click="di.seleccionarImagen()">
+		  <img ng-src="{{di.urlImagen}}">
+		  <h2>{{di.descImagen}}</h2>
+	</a>
+
+	<!--
+    <input ng-model="di.urlImagen" type="text" placeholder="Imagen">
+	-->
+	
+   <label class="item item-input item-select">
+    <div class="input-label">
+      Espacio
+    </div>
+    <select ng-model="di.idEspacio" >
+	<option value="">Seleccione</option>
+      <option ng-repeat="es in di.lista" value="{{es.id}}">{{es.descripcion}}</option>
+      
+    </select>
+  </label>
+  
+</div>
+	
+	 
+	<md-button ng-click="di.alta()" class="md-raised">Guardar</md-button>
+	
+  </ion-content>
+</ion-view>
+ 

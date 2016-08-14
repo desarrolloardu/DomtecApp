@@ -1,0 +1,76 @@
+<ion-view view-title="Alta Modulo">
+  <ion-content>
+    <h1>Alta Modulo</h1>
+	
+	<div class="list">
+  <label class="item item-input item-floating-label">
+    <span class="input-label">Descripcion</span>
+    <input ng-model="ma.descripcion" type="text" placeholder="Descripcion">
+  </label>
+  <label class="item item-input item-floating-label ">
+    <span class="input-label">UUID</span>
+    <input ng-model="ma.uuid" type="text" placeholder="UUID">
+  </label>
+  <label class="item item-input item-floating-label">
+    <span class="input-label">Clave</span>
+    <input ng-model="ma.clave" type="text" placeholder="Clave">
+  </label>
+  
+   <label class="item item-input item-select">
+    <div class="input-label">
+      Tipo Modulo
+    </div>
+    <select ng-model="ma.selectTipo" >
+	<option value="">Seleccione</option>
+      <option ng-repeat="it in ma.lista" value="{{it.cod}}">{{it.desc}}</option>
+      
+    </select>
+  </label>
+  
+</div>
+	
+	
+	
+	<!--
+	
+	<md-input-container md-no-float class="md-block">
+        <label>Descripcion</label>
+        <input ng-model="ma.descripcion">
+    </md-input-container>
+	
+	
+	
+	<md-input-container md-no-float class="md-block">
+        <label>UUID</label>
+        <input ng-model="ma.uuid">
+    </md-input-container>
+	
+	
+	
+	
+	<md-input-container md-no-float class="md-block">
+        <label>Clave</label>
+        <input ng-model="ma.clave">
+    </md-input-container>
+	
+	
+	
+	
+	<md-input-container  >
+	<label>Tipo</label>
+	<md-select ng-model="ma.selectTipo" placeholder="Select a state">
+	
+          <md-option ng-repeat="it in ma.lista" ng-value="it.cod">
+            {{it.desc}}
+          </md-option>
+        </md-select>
+	 </md-input-container>
+
+-->
+
+	 
+	<md-button ng-click="ma.alta()" class="md-raised">Guardar</md-button>
+	
+  </ion-content>
+</ion-view>
+ 
