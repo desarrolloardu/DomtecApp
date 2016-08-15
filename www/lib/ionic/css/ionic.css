@@ -8589,10 +8589,7 @@ progress {
   font-size: 16px;
   line-height: 42px;
   cursor: pointer; }
-  .button-c
-{
-	background-color: transparent;	
-}
+  
   .button:hover {
     color: #444;
     text-decoration: none; }

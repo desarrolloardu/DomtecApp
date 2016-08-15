@@ -1,9 +1,8 @@
 <ion-view view-title="Modulos">
   <ion-content>
     <h1>Modulos</h1>
-
 	<div class="list">
-		<a ng-repeat="modulo in mo.lista" class="item item-thumbnail-left" href="#/app/modulos/{{modulo.id}}">
+		<a ng-repeat="modulo in mo.lista" class="item item-thumbnail-left" >
 		  <img ng-src="{{mo.urlImagen(modulo.idModuloTipo)}}">
 		  <h2>{{modulo.descripcion}}</h2>
 		  <h2>{{modulo.uuid}}</h2>
@@ -11,10 +10,14 @@
 		</a>
 	</div>
 		
-		<md-button class="md-fab float-button" aria-label="Alta Modulo" href="#/app/moduloAlta">
-            <i class="fa fa-plus"></i>
-    </md-button>
+		
   </ion-content>
+  <md-button class="md-fab float-button" aria-label="Alta Modulo" href="#/app/moduloAlta">
+		
+		<div class="content">
+            <i style="font-size:20px" class="fa fa-plus"></i>
+			</div>
+    </md-button>
   
   
 </ion-view>

@@ -41,9 +41,10 @@ angular.module('starter', ['ionic', 'starter.controllers','starter.services', 'n
 
   .state('app.acercade', {
     url: '/acercade',
-	cache: false,
+	//cache: false,
     views: {
       'menuContent': {
+		  reload:true,
         templateUrl: 'templates/acercade.html',
 		controller: 'AcercaDeCtrl',
 		controllerAs: 'ad' 
@@ -65,9 +66,10 @@ angular.module('starter', ['ionic', 'starter.controllers','starter.services', 'n
 	.state('app.dispositivoAlta', {
       url: '/dispositivoAlta',
 	  params:{parametros:null},
-	  cache: false,
+	  //cache: false,
       views: {
         'menuContent': {
+			reload:true,
           templateUrl: 'templates/dispositivoAlta.html',
           controller: 'DispositivoAltaCtrl',
 		  controllerAs: 'di' 
@@ -77,10 +79,13 @@ angular.module('starter', ['ionic', 'starter.controllers','starter.services', 'n
 	
 	.state('app.modulos', {
       url: '/modulos',
-	  cache: false,
-      views: {
+	  module:'modulos',
+	  views: {
         'menuContent': {
+			
           templateUrl: 'templates/modulos.html',
+		  
+		  
           controller: 'ModulosCtrl',
 		  controllerAs: 'mo' 
         }
@@ -160,7 +165,7 @@ angular.module('starter', ['ionic', 'starter.controllers','starter.services', 'n
   
   .state('app.inicio.dispositivos', {
     url: '/dispositivos',
-	cache: false,
+	module:'dispositivos',
     views: {
 		'dispositivos-tab': {
         templateUrl: 'templates/dispositivos.html',
@@ -173,7 +178,7 @@ angular.module('starter', ['ionic', 'starter.controllers','starter.services', 'n
   
   .state('app.inicio.espacios', {
     url: '/espacios',
-	cache: false,
+	module:'espacios',
     views: {
 		'espacios-tab': {
         templateUrl: 'templates/espacios.html',

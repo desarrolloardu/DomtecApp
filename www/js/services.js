@@ -189,7 +189,7 @@ angular.module('starter.services', [])
 				var query = "SELECT * FROM modulos";
 				
 				$cordovaSQLite.execute(db, query)
-				.then(
+					.then(
 						function(res) {
 							//alert(res);
 							if(res.rows.length > 0) {
@@ -211,7 +211,9 @@ angular.module('starter.services', [])
 							$cordovaToast.show("ERROR SELECT", 'long', 'center');
 							q.reject(err);
 						}
-					)
+					);
+					
+					
 				return q.promise;
 			},
 			
@@ -405,7 +407,7 @@ angular.module('starter.services', [])
 				$cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS espacios (id integer primary key AUTOINCREMENT, descripcion text, urlImagen text)").then(function(res) {/*alert("ABRIO LA DB");*/}, function (err) {alert("ERROR TABLA espacios");});
 				$cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS dispositivos (id integer primary key AUTOINCREMENT, nombre text, descripcion text, idEspacio int, urlImagen text)").then(function(res) {/*alert("ABRIO LA DB");*/}, function (err) {alert("ERROR TABLA dispositivos");});
 
-				$state.go('app.inicio.espacios');
+				$state.go('app.inicio.dispositivos');
 			}
 		
 		}

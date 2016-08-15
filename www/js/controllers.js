@@ -1,3 +1,7 @@
+
+
+
+
 angular.module('starter.controllers', [])
 
 .controller('AppCtrl', function($scope, $ionicModal, $timeout) {
@@ -41,12 +45,33 @@ angular.module('starter.controllers', [])
   };
 })
 
-.controller('ModulosCtrl', function(Modulos,$cordovaToast) {
+.controller('ModulosCtrl', function($rootScope,Modulos,$cordovaToast) {
 
 	var vm = this;
 	
 	
+	
 	vm.tipoModulos=Modulos.tipoModulos();
+	
+	
+	
+	$rootScope.$on('$stateChangeStart', 
+function(event, toState, toParams, fromState, fromParams){ 
+
+if(toState.module=='modulos'){
+	
+	Modulos.lista().then( 
+			function(res){
+							if(!angular.equals(vm.lista,res))
+			vm.lista = res;
+						});
+
+	
+	}
+
+ });
+	
+
 	
 	Modulos.lista().then( 
 			function(res){
@@ -128,9 +153,30 @@ angular.module('starter.controllers', [])
 })
 
 
-.controller('DispositivosCtrl', function($scope, Dispositivos) {
+.controller('DispositivosCtrl', function($rootScope,$scope, Dispositivos) {
 	
 		var vm = this;
+		
+		
+		$rootScope.$on('$stateChangeStart', 
+function(event, toState, toParams, fromState, fromParams){ 
+
+if(toState.module=='dispositivos'){
+	
+	Dispositivos.lista().then( 
+			function(res){
+							
+							
+							if(!angular.equals(vm.lista,res))
+			vm.lista = res;
+							
+						});
+
+	
+	}
+
+ });
+	
 	
 		Dispositivos.lista().then( 
 				function(res){
@@ -147,9 +193,9 @@ angular.module('starter.controllers', [])
 	$ionicPlatform.ready(function() {
 		
 		
-		$cordovaBluetoothSerial.list().then(exito, error);
-		//$cordovaBluetoothSerial.connect("AA:BB:CC:DD:EE:FF").then(exito, error);
-		
+		//$cordovaBluetoothSerial.list().then(exito, error);
+		//$cordovaBluetoothSerial.connect("04:1B:BA:E5:31:50").then(conectExito, error);
+		bluetoothSerial.enable(enableExito, error);
 		
 		//$cordovaBluetoothSerial.isConnected(function (){alert("conectado");}, function (){alert("NO conectado");})
 	//$cordovaPlugin.someFunction().then(success, error);
@@ -158,7 +204,18 @@ angular.module('starter.controllers', [])
 	function exito (response)
 	{
 		vm.lista=response;
-		$cordovaToast.show('Here is a message', 'long', 'center');
+		
+		$cordovaToast.show(vm.lista[2].name, 'long', 'center');
+	}
+	
+	function conectExito (response)
+	{
+		$cordovaToast.show('Conecto!', 'long', 'center');
+	}
+	
+	function enableExito (response)
+	{
+		$cordovaToast.show("Bluetooth is enabled", 'long', 'center');
 	}
 	
 	
@@ -174,9 +231,17 @@ angular.module('starter.controllers', [])
 	//alert(test.tit); //test[0]
 })
 
-.controller('DispositivoAltaCtrl', function(Dispositivos, Espacios, $state, $stateParams) {
+.controller('DispositivoAltaCtrl', function($scope,$ionicModal,Dispositivos, Espacios, $state, $stateParams) {
 
 	var vm = this;
+	
+	$ionicModal.fromTemplateUrl('js/my-modal.html', {
+    scope: $scope,
+    animation: 'slide-in-up'
+  }).then(function(modal) {
+    $scope.modal = modal;
+  });
+	
 	
 	vm.urlImagen = "./img/ionic.png";
 	
@@ -198,11 +263,13 @@ angular.module('starter.controllers', [])
 	vm.alta = function(){
 		
 		Dispositivos.insertar(vm.nombre, vm.descripcion, vm.idEspacio, vm.urlImagen);
+		$state.go("app.inicio.dispositivos");
 		//alert("ALTA");
 		
 	};
 
 	vm.seleccionarImagen = function(){
+		//$scope.modal.show();
 		//alert("seleccionarImagen");
 		var parametrosActuales = {nombre:vm.nombre, descripcion:vm.descripcion, idEspacio:vm.idEspacio, urlImagen:vm.urlImagen, codigoGaleria:'dispositivos'}	
 		$state.go("app.imagenes", {parametros:parametrosActuales});
@@ -283,9 +350,29 @@ angular.module('starter.controllers', [])
 
 
 
-.controller('EspaciosCtrl', function($scope, Espacios) {
+.controller('EspaciosCtrl', function($rootScope,$scope, Espacios) {
 	
 	var vm = this;
+	
+	
+	
+	$rootScope.$on('$stateChangeStart', 
+function(event, toState, toParams, fromState, fromParams){ 
+
+if(toState.module=='espacios'){
+	
+	Espacios.lista().then( 
+			function(res){
+				
+				if(!angular.equals(vm.lista,res))
+			vm.lista = res;
+						});
+
+	
+	}
+
+ });
+	
 	
 	Espacios.lista().then( 
 			function(res){
