@@ -189,46 +189,40 @@ if(toState.module=='dispositivos'){
 .controller('DispositivoCtrl', function($scope, $stateParams, Dispositivos, $ionicPlatform, $cordovaBluetoothSerial, $cordovaToast) {
 	var vm =this;
 	
-	
-	$ionicPlatform.ready(function() {
+
+	//$cordovaBluetoothSerial.list().then(exito, error);
+	//$cordovaBluetoothSerial.connect("04:1B:BA:E5:31:50").then(conectExito, error);
+	//$cordovaBluetoothSerial.connect("D0:DB:32:AA:39:0A").then(conectExito, error);
+	//$cordovaBluetoothSerial.connect("D0:DB:32:A7:CC:80").then(conectExito, error);
+	$cordovaBluetoothSerial.connect("B8:57:D8:7A:0A:F1").then(conectExito, error);
+	//$cordovaBluetoothSerial.enable().then(enableExito, error);
 		
-		
-		//$cordovaBluetoothSerial.list().then(exito, error);
-		//$cordovaBluetoothSerial.connect("04:1B:BA:E5:31:50").then(conectExito, error);
-		bluetoothSerial.enable(enableExito, error);
-		
-		//$cordovaBluetoothSerial.isConnected(function (){alert("conectado");}, function (){alert("NO conectado");})
+	//$cordovaBluetoothSerial.isConnected(function (){alert("conectado");}, function (){alert("NO conectado");})
 	//$cordovaPlugin.someFunction().then(success, error);
-	});
 	
 	function exito (response)
 	{
 		vm.lista=response;
 		
 		$cordovaToast.show(vm.lista[2].name, 'long', 'center');
-	}
+	};
 	
 	function conectExito (response)
 	{
 		$cordovaToast.show('Conecto!', 'long', 'center');
-	}
+	};
 	
 	function enableExito (response)
 	{
 		$cordovaToast.show("Bluetooth is enabled", 'long', 'center');
-	}
+	};
 	
 	
 	function error (response)
 	{
 		$cordovaToast.show('error', 'long', 'center');
-	}
-	//var test = 	$rootScope.playlists[0];
-	//debugger;
-	var dispositivo = Dispositivos.getDispositivo($stateParams.dispositivoId);
-	
-	this.textDispositivo = dispositivo.title;
-	//alert(test.tit); //test[0]
+	};
+
 })
 
 .controller('DispositivoAltaCtrl', function($scope,$ionicModal,Dispositivos, Espacios, $state, $stateParams) {

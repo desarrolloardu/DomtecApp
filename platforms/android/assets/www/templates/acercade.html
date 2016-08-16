@@ -1,0 +1,13 @@
+<ion-view view-title="Acercade">
+  <ion-content>
+    <h1>Acerca de</h1>
+	
+	
+	<md-button ng-click="ad.select()" class="md-raised">SELECT</md-button>
+	
+	<div ng-repeat="it in ad.lista">
+	{{it.id}} - {{it.firstname}} - {{it.lastname}}
+	</div>
+  </ion-content>
+</ion-view>
+ 

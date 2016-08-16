@@ -1,0 +1,92 @@
+
+
+
+
+<ion-view view-title="Domtec">
+
+
+<ion-nav-bar class="has-tabs-top bar-positive ">
+      <ion-nav-back-button>
+      </ion-nav-back-button>
+
+      <ion-nav-buttons side="left">
+        <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
+        </button>
+      </ion-nav-buttons>
+	  
+	  
+	  
+    </ion-nav-bar>
+	
+	<ion-tabs class="  tabs-background-positive tabs-color-light">
+
+        <ion-tab title="Espacios" href="#/ambientes">
+			<ion-nav-view name="espacios-tab"></ion-nav-view>
+        </ion-tab>
+		
+		<ion-tab title="Dispositivos" href="#/dispositivos">
+			<ion-nav-view name="dispositivos-tab"></ion-nav-view>
+        </ion-tab>
+		
+</ion-tabs>
+
+
+
+
+
+  <ion-content class="has-tabs-top has-header">
+	<div class="row" ng-repeat="ambiente in ambientes" ng-if="$index % 3 === 0">
+	
+        <div class="col col-33" style="text-align:center" ng-if="$index < ambientes.length">	
+			<md-card md-theme="dark-grey" md-theme-watch>
+				<md-button  href="#/app/ambientes/{{ambientes[$index].id}}">
+					<img class="md-card-image" src="./img/{{ambientes[$index].img}}"/>
+				</md-button>     
+				<md-card-actions layout="row" layout-align="end center">
+					<a href="#/app/ambientes/{{ambientes[$index].id}}">		
+					  <i class="fa fa-bars fa-2x"></i>
+					</a>
+					<span style="padding-right:2.5em"></span>
+					<a href="#/app/ambientes/{{ambientes[$index].id}}">		
+					  <i class="fa fa-trash-o fa-2x"></i>
+					</a>
+				</md-card-actions>
+			</md-card>     
+        </div>
+        <div class="col col-33" ng-if="$index + 1 < ambientes.length">
+            <md-card md-theme="dark-grey" md-theme-watch>
+				<md-button  href="#/app/ambientes/{{ambientes[$index+1].id}}">
+					<img class="md-card-image" src="./img/{{ambientes[$index+1].img}}"/>
+				</md-button>     
+				<md-card-actions layout="row" layout-align="end center">
+					<a href="#/app/ambientes/{{ambientes[$index+1].id}}">		
+					  <i class="fa fa-bars fa-2x"></i>
+					</a>
+					<span style="padding-right:2.5em"></span>
+					<a href="#/app/ambientes/{{ambientes[$index+1].id}}">		
+					  <i class="fa fa-trash-o fa-2x"></i>
+					</a>
+				</md-card-actions>
+			</md-card>      
+        </div>
+        <div class="col col-33" ng-if="$index + 2 < ambientes.length">
+            <md-card md-theme="dark-grey" md-theme-watch>
+				<md-button href="#/app/ambientes/{{ambientes[$index+2].id}}">
+					<img class="md-card-image" src="./img/{{ambientes[$index+2].img}}"/>
+				</md-button>     
+				<md-card-actions layout="row" layout-align="end center">
+					<a href="#/app/ambientes/{{ambientes[$index+2].id}}">		
+					  <i class="fa fa-bars fa-2x"></i>
+					</a>
+					<span style="padding-right:2.5em"></span>
+					<a href="#/app/ambientes/{{ambientes[$index+2].id}}">		
+					  <i class="fa fa-trash-o fa-2x"></i>
+					</a>
+					
+				</md-card-actions>
+			</md-card>            
+        </div>
+    </div>
+  </ion-content>
+  </ion-view>
+  
