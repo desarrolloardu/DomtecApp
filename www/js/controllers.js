@@ -189,12 +189,44 @@ if(toState.module=='dispositivos'){
 .controller('DispositivoCtrl', function($scope, $stateParams, Dispositivos, $ionicPlatform, $cordovaBluetoothSerial, $cordovaToast) {
 	var vm =this;
 	
+	
+	vm.listar = function(){
+		
+		$cordovaBluetoothSerial.list().then(exito, error);
+		
+	}
+	
+	vm.conectar = function(){
+		
+		$cordovaBluetoothSerial.connect("98:D3:31:70:30:80").then(conectExito, error);
+		
+	}
 
-	//$cordovaBluetoothSerial.list().then(exito, error);
-	//$cordovaBluetoothSerial.connect("04:1B:BA:E5:31:50").then(conectExito, error);
-	//$cordovaBluetoothSerial.connect("D0:DB:32:AA:39:0A").then(conectExito, error);
-	//$cordovaBluetoothSerial.connect("D0:DB:32:A7:CC:80").then(conectExito, error);
-	$cordovaBluetoothSerial.connect("B8:57:D8:7A:0A:F1").then(conectExito, error);
+	vm.conectar2 = function(){
+		
+		$cordovaBluetoothSerial.connect("98:D3:31:90:2C:00").then(conectExito, error);
+		
+	}
+	
+	vm.conectar3 = function(){
+		
+		$cordovaBluetoothSerial.connect("98:D3:31:60:0E:AA").then(conectExito, error);
+		
+	}
+	
+	vm.conectar4 = function(){
+		
+		$cordovaBluetoothSerial.connect("98:D3:31:80:3B:1A").then(conectExito, error);
+		
+	}
+	
+	vm.enviar = function(){
+		
+		$cordovaToast.show(vm.intensidad, 'long', 'center');
+		$cordovaBluetoothSerial.write(vm.intensidad+";", enviarExito, error);
+		
+	}
+	
 	//$cordovaBluetoothSerial.enable().then(enableExito, error);
 		
 	//$cordovaBluetoothSerial.isConnected(function (){alert("conectado");}, function (){alert("NO conectado");})
@@ -212,6 +244,11 @@ if(toState.module=='dispositivos'){
 		$cordovaToast.show('Conecto!', 'long', 'center');
 	};
 	
+	function enviarExito (response)
+	{
+		$cordovaToast.show('Envio!', 'long', 'center');
+	};
+	
 	function enableExito (response)
 	{
 		$cordovaToast.show("Bluetooth is enabled", 'long', 'center');
@@ -220,7 +257,7 @@ if(toState.module=='dispositivos'){
 	
 	function error (response)
 	{
-		$cordovaToast.show('error', 'long', 'center');
+		$cordovaToast.show(response, 'long', 'center');
 	};
 
 })
