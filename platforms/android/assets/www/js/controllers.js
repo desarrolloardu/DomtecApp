@@ -193,7 +193,8 @@ if(toState.module=='dispositivos'){
 	//$cordovaBluetoothSerial.list().then(exito, error);
 	//$cordovaBluetoothSerial.connect("04:1B:BA:E5:31:50").then(conectExito, error);
 	//$cordovaBluetoothSerial.connect("D0:DB:32:AA:39:0A").then(conectExito, error);
-	$cordovaBluetoothSerial.connect("D0:DB:32:A7:CC:80").then(conectExito, error);
+	//$cordovaBluetoothSerial.connect("D0:DB:32:A7:CC:80").then(conectExito, error);
+	$cordovaBluetoothSerial.connect("B8:57:D8:7A:0A:F1").then(conectExito, error);
 	//$cordovaBluetoothSerial.enable().then(enableExito, error);
 		
 	//$cordovaBluetoothSerial.isConnected(function (){alert("conectado");}, function (){alert("NO conectado");})
@@ -343,7 +344,7 @@ if(toState.module=='dispositivos'){
 
 
 
-.controller('EspaciosCtrl', function($rootScope,$scope, Espacios) {
+.controller('EspaciosCtrl', function($rootScope,$scope, Espacios,Modulos,Dispositivos) {
 	
 	var vm = this;
 	
@@ -372,6 +373,10 @@ if(toState.module=='espacios'){
 							//alert("lista");
 							vm.lista = res;
 						});
+						
+	Modulos.lista();
+	Dispositivos.lista();					
+						
 })
 
 

@@ -373,6 +373,9 @@ if(toState.module=='espacios'){
 							//alert("lista");
 							vm.lista = res;
 						});
+						
+						
+						
 })
 
 
