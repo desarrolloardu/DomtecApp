@@ -9,7 +9,7 @@
 
 angular.module('starter', ['ionic', 'starter.controllers','starter.services', 'ngMaterial', 'ngCordova' ])
 
-.run(function($ionicPlatform, $cordovaSQLite, FactoryDB) {
+.run(function($rootScope,$state,$ionicPlatform, $cordovaSQLite, $ionicHistory,FactoryDB) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -22,9 +22,43 @@ angular.module('starter', ['ionic', 'starter.controllers','starter.services', 'n
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
     }
+    
+    $ionicPlatform.registerBackButtonAction(function(e){
+     // e.preventDefault();
+     // e.stopPropagation();
+      //alert(window.location);
+      var vistaActual =$ionicHistory.currentStateName();
+      if ($rootScope.backButtonPressedOnceToExit) {
+      ionic.Platform.exitApp();
+    }
+    
+    else if ($ionicHistory.backView()) {
+      $ionicHistory.goBack();
+    }
+    else if (vistaActual=='app.modulos'){
+      
+      $state.go('app.inicio.espacios');
+      
+    }else {
+      $rootScope.backButtonPressedOnceToExit = true;
+      window.plugins.toast.showShortCenter(
+        "Press back button again to exit",function(a){},function(b){}
+      );
+      setTimeout(function(){
+        $rootScope.backButtonPressedOnceToExit = false;
+      },2000);
+    }
+    e.preventDefault();
+    return false;
+    
+    } ,101)
 	
+	FactoryDB.inicializarDB().then(function(){
+	  
+	  $state.go('app.inicio.espacios');	
+	  
+  });
 	
-	FactoryDB.inicializarDB();
 	
   });
 })

@@ -56,10 +56,47 @@ angular.module('starter.services', [])
 
 
 .factory("Espacios", ['$cordovaSQLite', '$cordovaToast', '$rootScope', '$q', 'FactoryDB', function($cordovaSQLite, $cordovaToast, $rootScope, $q, FactoryDB){
-	
+	var lista;
 	var db = null;
 	
 	db=FactoryDB.punteroDb();
+	
+
+function actualizarLista () {
+		var q = $q.defer();
+		var respuesta = [];
+				var query = "SELECT * FROM espacios";
+				
+				$cordovaSQLite.execute(db, query)
+				.then(
+						function(res) {
+							//alert(res);
+							if(res.rows.length > 0) {
+								
+								for(var i=0; i<res.rows.length; i++)
+								{
+										respuesta[i] = res.rows.item(i);
+								}
+								
+								//$cordovaToast.show("SELECTED -> " + res.rows.item(0).clave + " " + res.rows.item(0).descripcion, 'long', 'center');
+							} else {
+								$cordovaToast.show("No results found", 'long', 'center');
+							}
+						//	alert(respuesta[0].clave);
+							lista=respuesta;
+							q.resolve(respuesta);
+						},
+						function (err) {
+						//	alert('entre a error');
+							$cordovaToast.show("ERROR SELECT", 'long', 'center');
+							q.reject(err);
+						}
+					)
+					
+					return q.promise;
+		
+		
+	};
 
 	var interfaz = {
 		
@@ -83,35 +120,23 @@ angular.module('starter.services', [])
 			
 			lista: function(){
 				
-				//alert("LISTA");
-				var q = $q.defer();
-				var respuesta = [];
-				var query = "SELECT * FROM espacios";
+			var q = $q.defer();
+			if(lista) {
+				q.resolve(lista)
+			} else {
 				
-				$cordovaSQLite.execute(db, query)
-				.then(
-						function(res) {
-							//alert(res);
-							if(res.rows.length > 0) {
-								
-								for(var i=0; i<res.rows.length; i++)
-								{
-										respuesta[i] = res.rows.item(i);
-								}
-								
-								//$cordovaToast.show("SELECTED -> " + res.rows.item(0).clave + " " + res.rows.item(0).descripcion, 'long', 'center');
-							} else {
-								$cordovaToast.show("No results found", 'long', 'center');
-							}
-						//	alert(respuesta[0].clave);
-							q.resolve(respuesta);
-						},
-						function (err) {
-						//	alert('entre a error');
-							$cordovaToast.show("ERROR SELECT", 'long', 'center');
-							q.reject(err);
-						}
-					)
+			actualizarLista().then(function(){
+				
+				q.resolve(lista)
+				
+			},function(err){
+				
+				q.reject(err)
+				
+			});	
+			}
+				
+				
 				return q.promise;
 			},
 			
@@ -150,6 +175,7 @@ angular.module('starter.services', [])
 
 
 .factory("Modulos", ['$cordovaSQLite', '$cordovaToast', '$rootScope', '$q','FactoryDB', function($cordovaSQLite, $cordovaToast, $rootScope, $q, FactoryDB){
+	var lista;
 	var db = null;
 		
 	db=FactoryDB.punteroDb();
@@ -158,10 +184,58 @@ angular.module('starter.services', [])
 	{desc:'Dimmer',cod:'DIMM', urlImagen:'img/ionic.png'},
 	{desc:"Zapatilla",cod:'ZAP', urlImagen:'img/ionic.png'},
 	{desc:"Rele",cod:'REL', urlImagen:'img/ionic.png'}];
+	
+	
+	function dameTipoModulo (cod) {
+			
+	var arrayFind = listaTipoModulos.filter(function(elem){
 		
+		return (elem.cod == cod)
 		
+	})	
 		
+	return arrayFind[0];
 		
+	};
+		
+		function actualizarLista () {
+	//alert("LISTA");
+				var q = $q.defer();
+				var respuesta = [];
+				var query = "SELECT * FROM modulos";
+				
+				$cordovaSQLite.execute(db, query)
+					.then(
+						function(res) {
+							//alert(res);
+							if(res.rows.length > 0) {
+								
+								for(var i=0; i<res.rows.length; i++)
+								{
+										respuesta[i] = res.rows.item(i);
+										respuesta[i].join=dameTipoModulo(respuesta[i].idModuloTipo);
+								
+										
+								}
+								
+								//$cordovaToast.show("SELECTED -> " + res.rows.item(0).clave + " " + res.rows.item(0).descripcion, 'long', 'center');
+							} else {
+								$cordovaToast.show("No results found", 'long', 'center');
+							}
+						//	alert(respuesta[0].clave);
+						lista=respuesta;
+							q.resolve(respuesta);
+						},
+						function (err) {
+						//	alert('entre a error');
+							$cordovaToast.show("ERROR SELECT", 'long', 'center');
+							q.reject(err);
+						}
+					);
+					
+					
+				return q.promise;	
+		};
 	
 	var interfaz = {
 			insertar: function(uuid, clave, descripcion, idModuloTipo, urlImagen){
@@ -183,38 +257,25 @@ angular.module('starter.services', [])
 			
 			lista: function(){
 				
-				//alert("LISTA");
 				var q = $q.defer();
-				var respuesta = [];
-				var query = "SELECT * FROM modulos";
+			if(lista) {
+				q.resolve(lista)
+			} else {
 				
-				$cordovaSQLite.execute(db, query)
-					.then(
-						function(res) {
-							//alert(res);
-							if(res.rows.length > 0) {
-								
-								for(var i=0; i<res.rows.length; i++)
-								{
-										respuesta[i] = res.rows.item(i);
-								}
-								
-								//$cordovaToast.show("SELECTED -> " + res.rows.item(0).clave + " " + res.rows.item(0).descripcion, 'long', 'center');
-							} else {
-								$cordovaToast.show("No results found", 'long', 'center');
-							}
-						//	alert(respuesta[0].clave);
-							q.resolve(respuesta);
-						},
-						function (err) {
-						//	alert('entre a error');
-							$cordovaToast.show("ERROR SELECT", 'long', 'center');
-							q.reject(err);
-						}
-					);
-					
-					
+			actualizarLista().then(function(){
+				
+				q.resolve(lista)
+				
+			},function(err){
+				
+				q.reject(err)
+				
+			});
+			}	
+				
+				
 				return q.promise;
+				
 			},
 			
 			seleccionarId: function(id){
@@ -289,32 +350,16 @@ angular.module('starter.services', [])
 
 
 .factory("Dispositivos", ['$cordovaSQLite', '$cordovaToast', '$rootScope', '$q','FactoryDB', 'Espacios', function($cordovaSQLite, $cordovaToast, $rootScope, $q, FactoryDB, Espacios){
+	var lista;
 	var db = null;
 	
 	db=FactoryDB.punteroDb();
 
-	var interfaz = {
-		
-		insertar: function(nombre, descripcion, idEspacio, urlImagen,idModulo, entradaModulo){
-			var q = $q.defer();
-			var query = "INSERT INTO dispositivos (nombre, descripcion, idEspacio, urlImagen,idModulo, entradaModulo) VALUES (?,?,?,?,?,?)";
-			$cordovaSQLite.execute(db, query, [nombre, descripcion, idEspacio, urlImagen, idModulo, entradaModulo])
-			.then(
-					function(res) {
-							$cordovaToast.show("INSERTO", 'long', 'center');	
-							q.resolve(res);
-						},
-					function (err) {
-						$cordovaToast.show("ERROR INSERT", 'long', 'center');
-						q.reject(err);
-						}
-				)
-			return q.promise;
-		},
-		
-		lista: function(){
-			
-			//alert("LISTA");
+	
+	
+	function actualizarLista () {
+	//alert("LISTA");
+
 			var q = $q.defer();
 			var respuesta = [];
 		//	var query = "SELECT d.id, d.nombre, d.descripcion, d.idEspacio, d.urlImagen, d.idModulo, d.entradaModulo, m.descripcion as moduloDescripcion FROM dispositivos d INNER JOIN modulos m ON d.idModulo = m.id";
@@ -337,6 +382,7 @@ angular.module('starter.services', [])
 							$cordovaToast.show("No results found", 'long', 'center');
 						}
 					//	alert(respuesta[0].clave);
+					lista=respuesta;
 						q.resolve(respuesta);
 					},
 					function (err) {
@@ -346,6 +392,51 @@ angular.module('starter.services', [])
 					}
 				)
 			return q.promise;
+			
+			};
+
+	var interfaz = {
+		
+		insertar: function(nombre, descripcion, idEspacio, urlImagen,idModulo, entradaModulo){
+			var q = $q.defer();
+			var query = "INSERT INTO dispositivos (nombre, descripcion, idEspacio, urlImagen,idModulo, entradaModulo) VALUES (?,?,?,?,?,?)";
+			$cordovaSQLite.execute(db, query, [nombre, descripcion, idEspacio, urlImagen, idModulo, entradaModulo])
+			.then(
+					function(res) {
+							$cordovaToast.show("INSERTO", 'long', 'center');	
+							q.resolve(res);
+						},
+					function (err) {
+						$cordovaToast.show("ERROR INSERT", 'long', 'center');
+						q.reject(err);
+						}
+				)
+			return q.promise;
+		},
+		
+		lista: function(){
+			
+			var q = $q.defer();
+			if(lista) {
+				q.resolve(lista)
+			} else {
+				
+			actualizarLista().then(function(){
+				
+				q.resolve(lista)
+				
+			},function(err){
+				
+				q.reject(err)
+				
+			});	
+			}
+				
+				
+				return q.promise;
+				
+			
+			
 		},
 		
 		seleccionarId: function(id){
@@ -385,7 +476,8 @@ angular.module('starter.services', [])
 .factory("FactoryDB", ['$cordovaSQLite', '$cordovaToast', '$rootScope', '$q','$state', function($cordovaSQLite, $cordovaToast, $rootScope, $q,$state){
 	
 		var db = null;
-
+			
+			
 					
 		var interfaz = {
 			
@@ -397,19 +489,48 @@ angular.module('starter.services', [])
 			
 			
 			inicializarDB: function(){
+				
+				var q = $q.defer();
 				try{
 					db = $cordovaSQLite.openDB({name: 'my.db', location: 'default'});
 					} 
 					catch (e) {
 					  alert(e);
+					  q.reject(e);
 					  //throw e; // rethrow to not marked as handled
 					}
 
-				$cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS modulos (id integer primary key AUTOINCREMENT, uuid text, clave text, descripcion text, idModuloTipo text, urlImagen text)").then(function(res) {/*alert("ABRIO LA DB");*/}, function (err) {alert("ERROR TABLA modulos");});
-				$cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS espacios (id integer primary key AUTOINCREMENT, descripcion text, urlImagen text)").then(function(res) {/*alert("ABRIO LA DB");*/}, function (err) {alert("ERROR TABLA espacios");});
-				$cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS dispositivos (id integer primary key AUTOINCREMENT, nombre text, descripcion text, idEspacio int, urlImagen text, idModulo int, entradaModulo int)").then(function(res) {/*alert("ABRIO LA DB");*/}, function (err) {alert("ERROR TABLA dispositivos");});
 
-				$state.go('app.inicio.dispositivos');
+				$cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS modulos (id integer primary key AUTOINCREMENT, uuid text, clave text, descripcion text, idModuloTipo text, urlImagen text)").then(
+			
+		function(res) {
+			
+			$cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS espacios (id integer primary key AUTOINCREMENT, descripcion text, urlImagen text)").then(
+		
+	function(res) {
+		
+		
+		$cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS dispositivos (id integer primary key AUTOINCREMENT, nombre text, descripcion text, idEspacio int, urlImagen text, idModulo int, entradaModulo int)").then(
+	function(res) {
+		
+		q.resolve();
+		
+		
+	}, function (err) {alert("ERROR TABLA dispositivos");q.reject(err)});
+		
+		
+	}, function (err) {alert("ERROR TABLA espacios");q.reject(err)});
+			
+			
+		}, function (err) {alert("ERROR TABLA modulos");q.reject(err)});
+				
+				return q.promise;
+					
+				
+					
+						
+				
+
 			}
 		
 		}
