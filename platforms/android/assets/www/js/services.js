@@ -295,10 +295,10 @@ angular.module('starter.services', [])
 
 	var interfaz = {
 		
-		insertar: function(nombre, descripcion, idEspacio, urlImagen){
+		insertar: function(nombre, descripcion, idEspacio, urlImagen,idModulo, entradaModulo){
 			var q = $q.defer();
-			var query = "INSERT INTO dispositivos (nombre, descripcion, idEspacio, urlImagen) VALUES (?,?,?,?)";
-			$cordovaSQLite.execute(db, query, [nombre, descripcion, idEspacio, urlImagen])
+			var query = "INSERT INTO dispositivos (nombre, descripcion, idEspacio, urlImagen,idModulo, entradaModulo) VALUES (?,?,?,?,?,?)";
+			$cordovaSQLite.execute(db, query, [nombre, descripcion, idEspacio, urlImagen, idModulo, entradaModulo])
 			.then(
 					function(res) {
 							$cordovaToast.show("INSERTO", 'long', 'center');	
@@ -317,8 +317,10 @@ angular.module('starter.services', [])
 			//alert("LISTA");
 			var q = $q.defer();
 			var respuesta = [];
-			var query = "SELECT * FROM dispositivos";
-			
+		//	var query = "SELECT d.id, d.nombre, d.descripcion, d.idEspacio, d.urlImagen, d.idModulo, d.entradaModulo, m.descripcion as moduloDescripcion FROM dispositivos d INNER JOIN modulos m ON d.idModulo = m.id";
+		//	var query = "SELECT d.id, d.nombre, d.descripcion, d.idEspacio, d.urlImagen, d.idModulo, d.entradaModulo FROM dispositivos d";
+			var query = "SELECT d.id, d.nombre, d.descripcion, d.idEspacio, d.urlImagen, d.idModulo, d.entradaModulo FROM dispositivos d";
+		
 			$cordovaSQLite.execute(db, query)
 			.then(
 					function(res) {
@@ -405,7 +407,7 @@ angular.module('starter.services', [])
 
 				$cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS modulos (id integer primary key AUTOINCREMENT, uuid text, clave text, descripcion text, idModuloTipo text, urlImagen text)").then(function(res) {/*alert("ABRIO LA DB");*/}, function (err) {alert("ERROR TABLA modulos");});
 				$cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS espacios (id integer primary key AUTOINCREMENT, descripcion text, urlImagen text)").then(function(res) {/*alert("ABRIO LA DB");*/}, function (err) {alert("ERROR TABLA espacios");});
-				$cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS dispositivos (id integer primary key AUTOINCREMENT, nombre text, descripcion text, idEspacio int, urlImagen text)").then(function(res) {/*alert("ABRIO LA DB");*/}, function (err) {alert("ERROR TABLA dispositivos");});
+				$cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS dispositivos (id integer primary key AUTOINCREMENT, nombre text, descripcion text, idEspacio int, urlImagen text, idModulo int, entradaModulo int)").then(function(res) {/*alert("ABRIO LA DB");*/}, function (err) {alert("ERROR TABLA dispositivos");});
 
 				$state.go('app.inicio.dispositivos');
 			}

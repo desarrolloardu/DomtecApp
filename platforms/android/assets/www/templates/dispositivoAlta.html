@@ -33,7 +33,29 @@
       
     </select>
   </label>
-  
+
+  <label class="item item-input item-select">
+    <div class="input-label">
+      Modulo
+    </div>
+    <select ng-model="di.idModulo" >
+    	<option value="">Seleccione</option>
+      <option ng-repeat="es in di.listaModulos" value="{{es.id}}">{{es.descripcion}}</option>
+      
+    </select>
+  </label>
+
+  <label class="item item-input item-select">
+    <div class="input-label">
+      Entrada
+    </div>
+    <select ng-model="di.entradaModulo" >
+      <option value="">Seleccione</option>
+      <option value="1">1</option>
+      <option value="2">2</option>
+    </select>
+  </label>
+ 
 </div>
 	
 	 

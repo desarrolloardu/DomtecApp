@@ -155,34 +155,28 @@ if(toState.module=='modulos'){
 
 .controller('DispositivosCtrl', function($rootScope,$scope, Dispositivos) {
 	
-		var vm = this;
+var vm = this;
 		
 		
-		$rootScope.$on('$stateChangeStart', 
-function(event, toState, toParams, fromState, fromParams){ 
+$rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) { 
 
-if(toState.module=='dispositivos'){
-	
-	Dispositivos.lista().then( 
-			function(res){
-							
-							
-							if(!angular.equals(vm.lista,res))
-			vm.lista = res;
-							
-						});
-
-	
-	}
-
- });
-	
+	if(toState.module=='dispositivos'){
 	
 		Dispositivos.lista().then( 
-				function(res){
-								//alert("lista");
+			function(res){
+							if(!angular.equals(vm.lista,res))
 								vm.lista = res;
-							});
+							
+						});
+	}
+
+ });	
+	
+Dispositivos.lista().then( 
+		function(res){
+			//alert("lista");
+			vm.lista = res;
+		});
 	
 })
 
@@ -227,10 +221,6 @@ if(toState.module=='dispositivos'){
 		
 	}
 	
-	//$cordovaBluetoothSerial.connect("04:1B:BA:E5:31:50").then(conectExito, error);
-	//$cordovaBluetoothSerial.connect("D0:DB:32:AA:39:0A").then(conectExito, error);
-	//$cordovaBluetoothSerial.connect("D0:DB:32:A7:CC:80").then(conectExito, error);
-	//$cordovaBluetoothSerial.connect("B8:57:D8:7A:0A:F1").then(conectExito, error);
 	//$cordovaBluetoothSerial.enable().then(enableExito, error);
 		
 	//$cordovaBluetoothSerial.isConnected(function (){alert("conectado");}, function (){alert("NO conectado");})
@@ -266,7 +256,7 @@ if(toState.module=='dispositivos'){
 
 })
 
-.controller('DispositivoAltaCtrl', function($scope,$ionicModal,Dispositivos, Espacios, $state, $stateParams) {
+.controller('DispositivoAltaCtrl', function($scope,$ionicModal,Dispositivos, Espacios, Modulos, $state, $stateParams) {
 
 	var vm = this;
 	
@@ -288,6 +278,8 @@ if(toState.module=='dispositivos'){
 		vm.urlImagen = $stateParams.parametros.urlImagen;
 		vm.descImagen= $stateParams.parametros.descImagen;
 		vm.codImagen= $stateParams.parametros.codImagen;
+		vm.idModulo= $stateParams.parametros.idModulo;
+		vm.entradaModulo= $stateParams.parametros.entradaModulo;	
 	}
 	
 	Espacios.lista().then(function(res){
@@ -295,18 +287,23 @@ if(toState.module=='dispositivos'){
 		
 	});
 
+	Modulos.lista().then(function(res){
+		vm.listaModulos = res;
+		
+	});
+
 	vm.alta = function(){
 		
-		Dispositivos.insertar(vm.nombre, vm.descripcion, vm.idEspacio, vm.urlImagen);
-		$state.go("app.inicio.dispositivos");
+		Dispositivos.insertar(vm.nombre, vm.descripcion, vm.idEspacio, vm.urlImagen, vm.idModulo,vm.entradaModulo);
+		//$state.go("app.inicio.dispositivos");
 		//alert("ALTA");
 		
 	};
 
 	vm.seleccionarImagen = function(){
 		//$scope.modal.show();
-		//alert("seleccionarImagen");
-		var parametrosActuales = {nombre:vm.nombre, descripcion:vm.descripcion, idEspacio:vm.idEspacio, urlImagen:vm.urlImagen, codigoGaleria:'dispositivos'}	
+		alert(vm.entradaModulo);
+		var parametrosActuales = {nombre:vm.nombre, descripcion:vm.descripcion, idEspacio:vm.idEspacio, urlImagen:vm.urlImagen, idModulo:vm.idModulo, entradaModulo:vm.entradaModulo, codigoGaleria:'dispositivos'}	
 		$state.go("app.imagenes", {parametros:parametrosActuales});
 	}
 	
