@@ -1,9 +1,9 @@
 <ion-view view-title="Modulos">
   <ion-content>
-    <h1>Modulos</h1>
+    
 	<div class="list">
 		<a ng-repeat="modulo in mo.lista" class="item item-thumbnail-left" >
-		  <img ng-src="{{mo.urlImagen(modulo.idModuloTipo)}}">
+		  <img ng-src="{{modulo.join.urlImagen}}">
 		  <h2>{{modulo.descripcion}}</h2>
 		  <h2>{{modulo.uuid}}</h2>
 		  <h2>{{modulo.idModuloTipo}}</h2>

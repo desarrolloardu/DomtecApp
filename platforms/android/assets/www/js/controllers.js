@@ -4,7 +4,7 @@
 
 angular.module('starter.controllers', [])
 
-.controller('AppCtrl', function($scope, $ionicModal, $timeout) {
+.controller('AppCtrl', function($scope, $ionicModal,$state, $timeout,FactoryDB) {
 
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
@@ -43,9 +43,12 @@ angular.module('starter.controllers', [])
       $scope.closeLogin();
     }, 1000);
   };
+  
+  
+  
 })
 
-.controller('ModulosCtrl', function($rootScope,Modulos,$cordovaToast) {
+.controller('ModulosCtrl', function($rootScope,$scope,Modulos,$cordovaToast) {
 
 	var vm = this;
 	
@@ -55,7 +58,7 @@ angular.module('starter.controllers', [])
 	
 	
 	
-	$rootScope.$on('$stateChangeStart', 
+	 /*$rootScope.$on('$stateChangeStart', 
 function(event, toState, toParams, fromState, fromParams){ 
 
 if(toState.module=='modulos'){
@@ -69,9 +72,9 @@ if(toState.module=='modulos'){
 	
 	}
 
- });
+ });*/
 	
-
+$scope.$on('$ionicView.enter', function(e) {
 	
 	Modulos.lista().then( 
 			function(res){
@@ -80,21 +83,9 @@ if(toState.module=='modulos'){
 						
 	
 						
+});				
 						
-						
-	vm.urlImagen = function (tipo) {
-		var respuesta = vm.tipoModulos.filter(function(elemento) {
-					
-					
-					
-					
-					return (elemento.cod == tipo);
-					
-				})
-				
-		return respuesta[0].urlImagen;
-					
-	}					
+		
 })
 
 .controller('ModuloAltaCtrl', function(Modulos) {
@@ -157,8 +148,7 @@ if(toState.module=='modulos'){
 	
 		var vm = this;
 		
-		
-		$rootScope.$on('$stateChangeStart', 
+			/*$rootScope.$on('$stateChangeStart', 
 function(event, toState, toParams, fromState, fromParams){ 
 
 if(toState.module=='dispositivos'){
@@ -171,18 +161,25 @@ if(toState.module=='dispositivos'){
 			vm.lista = res;
 							
 						});
+					
+					}
 
-	
-	}
-
- });
-	
-	
-		Dispositivos.lista().then( 
+ }); */
+ 
+ 
+ $scope.$on('$ionicView.enter', function(e) {
+  
+Dispositivos.lista().then( 
 				function(res){
 								//alert("lista");
 								vm.lista = res;
 							});
+
+
+});
+	
+	
+		
 	
 })
 
@@ -387,7 +384,7 @@ if(toState.module=='dispositivos'){
 	
 	
 	
-	$rootScope.$on('$stateChangeStart', 
+/*	$rootScope.$on('$stateChangeStart', 
 function(event, toState, toParams, fromState, fromParams){ 
 
 if(toState.module=='espacios'){
@@ -402,7 +399,10 @@ if(toState.module=='espacios'){
 	
 	}
 
- });
+ }); */
+ 
+ 
+ $scope.$on('$ionicView.enter', function(e) {
 	
 	
 	Espacios.lista().then( 
@@ -411,7 +411,7 @@ if(toState.module=='espacios'){
 							vm.lista = res;
 						});
 						
-						
+ })			
 						
 })
 

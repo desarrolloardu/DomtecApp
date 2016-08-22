@@ -123,7 +123,7 @@ function actualizarLista () {
 			var q = $q.defer();
 			if(lista) {
 				q.resolve(lista)
-			}
+			} else {
 				
 			actualizarLista().then(function(){
 				
@@ -134,6 +134,7 @@ function actualizarLista () {
 				q.reject(err)
 				
 			});	
+			}
 				
 				
 				return q.promise;
@@ -183,6 +184,19 @@ function actualizarLista () {
 	{desc:'Dimmer',cod:'DIMM', urlImagen:'img/ionic.png'},
 	{desc:"Zapatilla",cod:'ZAP', urlImagen:'img/ionic.png'},
 	{desc:"Rele",cod:'REL', urlImagen:'img/ionic.png'}];
+	
+	
+	function dameTipoModulo (cod) {
+			
+	var arrayFind = listaTipoModulos.filter(function(elem){
+		
+		return (elem.cod == cod)
+		
+	})	
+		
+	return arrayFind[0];
+		
+	};
 		
 		function actualizarLista () {
 	//alert("LISTA");
@@ -199,6 +213,9 @@ function actualizarLista () {
 								for(var i=0; i<res.rows.length; i++)
 								{
 										respuesta[i] = res.rows.item(i);
+										respuesta[i].join=dameTipoModulo(respuesta[i].idModuloTipo);
+								
+										
 								}
 								
 								//$cordovaToast.show("SELECTED -> " + res.rows.item(0).clave + " " + res.rows.item(0).descripcion, 'long', 'center');
@@ -243,7 +260,7 @@ function actualizarLista () {
 				var q = $q.defer();
 			if(lista) {
 				q.resolve(lista)
-			}
+			} else {
 				
 			actualizarLista().then(function(){
 				
@@ -253,7 +270,8 @@ function actualizarLista () {
 				
 				q.reject(err)
 				
-			});	
+			});
+			}	
 				
 				
 				return q.promise;
@@ -397,7 +415,7 @@ function actualizarLista () {
 			var q = $q.defer();
 			if(lista) {
 				q.resolve(lista)
-			}
+			} else {
 				
 			actualizarLista().then(function(){
 				
@@ -408,6 +426,7 @@ function actualizarLista () {
 				q.reject(err)
 				
 			});	
+			}
 				
 				
 				return q.promise;
@@ -466,19 +485,43 @@ function actualizarLista () {
 			
 			
 			inicializarDB: function(){
+				
+				var q = $q.defer();
 				try{
 					db = $cordovaSQLite.openDB({name: 'my.db', location: 'default'});
 					} 
 					catch (e) {
 					  alert(e);
+					  q.reject(e);
 					  //throw e; // rethrow to not marked as handled
 					}
 
-				$cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS modulos (id integer primary key AUTOINCREMENT, uuid text, clave text, descripcion text, idModuloTipo text, urlImagen text)").then(function(res) {/*alert("ABRIO LA DB");*/}, function (err) {alert("ERROR TABLA modulos");});
-				$cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS espacios (id integer primary key AUTOINCREMENT, descripcion text, urlImagen text)").then(function(res) {/*alert("ABRIO LA DB");*/}, function (err) {alert("ERROR TABLA espacios");});
-				$cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS dispositivos (id integer primary key AUTOINCREMENT, nombre text, descripcion text, idEspacio int, urlImagen text)").then(function(res) {/*alert("ABRIO LA DB");*/}, function (err) {alert("ERROR TABLA dispositivos");});
+				$cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS modulos (id integer primary key AUTOINCREMENT, uuid text, clave text, descripcion text, idModuloTipo text, urlImagen text)").then(
+			
+		function(res) {
+			
+			$cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS espacios (id integer primary key AUTOINCREMENT, descripcion text, urlImagen text)").then(
+		
+	function(res) {
+		
+		
+		$cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS dispositivos (id integer primary key AUTOINCREMENT, nombre text, descripcion text, idEspacio int, urlImagen text)").then(
+	function(res) {
+		
+		q.resolve();
+		
+		
+	}, function (err) {alert("ERROR TABLA dispositivos");q.reject(err)});
+		
+		
+	}, function (err) {alert("ERROR TABLA espacios");q.reject(err)});
+			
+			
+		}, function (err) {alert("ERROR TABLA modulos");q.reject(err)});
+				
+				return q.promise;
 					
-				$state.go('app.inicio.espacios');	
+				
 					
 						
 				
