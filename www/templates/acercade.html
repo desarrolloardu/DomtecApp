@@ -1,13 +1,20 @@
+
+
+
 <ion-view view-title="Acercade">
+	<ion-nav-bar class="bar-positive">
+      <ion-nav-buttons side="left">
+      <button ng-click="ad.back()" class="button button-icon icon ion-ios-arrow-back"></button>	 </ion-nav-buttons>
+		
+		
+  </ion-nav-bar>
+
+	
   <ion-content>
     <h1>Acerca de</h1>
 	
 	
-	<md-button ng-click="ad.select()" class="md-raised">SELECT</md-button>
 	
-	<div ng-repeat="it in ad.lista">
-	{{it.id}} - {{it.firstname}} - {{it.lastname}}
-	</div>
   </ion-content>
 </ion-view>
  

@@ -78,7 +78,6 @@ angular.module('starter', ['ionic', 'starter.controllers','starter.services', 'n
 	//cache: false,
     views: {
       'menuContent': {
-		  reload:true,
         templateUrl: 'templates/acercade.html',
 		controller: 'AcercaDeCtrl',
 		controllerAs: 'ad' 
@@ -103,7 +102,6 @@ angular.module('starter', ['ionic', 'starter.controllers','starter.services', 'n
 	  //cache: false,
       views: {
         'menuContent': {
-			reload:true,
           templateUrl: 'templates/dispositivoAlta.html',
           controller: 'DispositivoAltaCtrl',
 		  controllerAs: 'di' 

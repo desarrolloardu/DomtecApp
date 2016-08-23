@@ -107,8 +107,15 @@ function actualizarLista () {
 				$cordovaSQLite.execute(db, query, [descripcion, urlImagen])
 				.then(
 						function(res) {
-								$cordovaToast.show("INSERTO", 'long', 'center');	
-								q.resolve(res);
+								actualizarLista().then(function(res){
+									
+								var lista=res;	
+								q.resolve(res);	
+									
+								},function(err){
+									
+									q.reject(err);		
+								})	
 							},
 						function (err) {
 							$cordovaToast.show("ERROR INSERT", 'long', 'center');
@@ -244,8 +251,16 @@ function actualizarLista () {
 				$cordovaSQLite.execute(db, query, [uuid, clave, descripcion, idModuloTipo, urlImagen])
 				.then(
 						function(res) {
-								$cordovaToast.show("INSERTO", 'long', 'center');	
-								q.resolve(res);
+								actualizarLista().then(function(res){
+									
+								var lista=res;	
+								q.resolve(res);	
+									
+								},function(err){
+									
+									q.reject(err);		
+								})	
+								
 							},
 						function (err) {
 							$cordovaToast.show("ERROR INSERT", 'long', 'center');
@@ -403,8 +418,17 @@ function actualizarLista () {
 			$cordovaSQLite.execute(db, query, [nombre, descripcion, idEspacio, urlImagen, idModulo, entradaModulo])
 			.then(
 					function(res) {
-							$cordovaToast.show("INSERTO", 'long', 'center');	
-							q.resolve(res);
+							
+							actualizarLista().then(function(res){
+									
+								var lista=res;	
+								q.resolve(res);	
+									
+								},function(err){
+									
+									q.reject(err);		
+								})		
+							
 						},
 					function (err) {
 						$cordovaToast.show("ERROR INSERT", 'long', 'center');

@@ -48,9 +48,16 @@ angular.module('starter.controllers', [])
   
 })
 
-.controller('ModulosCtrl', function($rootScope,$scope,Modulos,$cordovaToast) {
+.controller('ModulosCtrl', function($rootScope,$scope,$state,Modulos,$cordovaToast) {
 
 	var vm = this;
+	
+	vm.back=back;
+	
+	function back () {
+		$state.go('app.inicio.espacios')
+		}
+	
 	
 	
 	
@@ -88,17 +95,27 @@ $scope.$on('$ionicView.enter', function(e) {
 		
 })
 
-.controller('ModuloAltaCtrl', function(Modulos) {
+.controller('ModuloAltaCtrl', function($ionicHistory,Modulos) {
 
 	var vm = this;
-	
-	
-	
 	vm.lista=Modulos.tipoModulos();
+	
+	vm.back=back;
+	
+	function back () {
+		$ionicHistory.goBack();
+		};
+	
+	
+	
 
 	vm.alta = function(){
 		
-		Modulos.insertar(vm.uuid,vm.descripcion,vm.clave,vm.selectTipo);
+		Modulos.insertar(vm.uuid,vm.descripcion,vm.clave,vm.selectTipo).then(function(res){
+			
+			$state.go('app.modulos');
+			
+		},function(err){});
 		
 		
 	}
@@ -118,11 +135,19 @@ $scope.$on('$ionicView.enter', function(e) {
 	})*/
 })
 
-.controller('EspacioAltaCtrl', function(Espacios, $stateParams, $state) {
+.controller('EspacioAltaCtrl', function(Espacios, $stateParams, $state,$ionicHistory) {
 
 	var vm = this;
 	
 	vm.urlImagen = "./img/ionic.png";
+	
+		vm.back=back;
+	
+	function back () {
+		$ionicHistory.goBack();
+		};
+	
+	
 	
 	if($stateParams.parametros != null)
 	{
@@ -133,7 +158,12 @@ $scope.$on('$ionicView.enter', function(e) {
 	}
 
 	vm.alta = function(){	
-		Espacios.insertar(vm.descripcion,vm.urlImagen);
+		Espacios.insertar(vm.descripcion,vm.urlImagen).then(function(res){
+			
+			
+			$state.go('app.inicio.espacios');
+			
+		},function(err){});
 	}
 	
 	vm.seleccionarImagen = function(){
@@ -261,9 +291,15 @@ Dispositivos.lista().then(
 
 })
 
-.controller('DispositivoAltaCtrl', function($scope,$ionicModal,Dispositivos, Espacios, Modulos, $state, $stateParams) {
+.controller('DispositivoAltaCtrl', function($scope,$ionicModal,Dispositivos, Espacios, Modulos, $state, $stateParams,$ionicHistory) {
 
 	var vm = this;
+	
+	vm.back=back;
+	
+	function back () {
+		$ionicHistory.goBack();
+		};
 	
 	$ionicModal.fromTemplateUrl('js/my-modal.html', {
     scope: $scope,
@@ -299,7 +335,11 @@ Dispositivos.lista().then(
 
 	vm.alta = function(){
 		
-		Dispositivos.insertar(vm.nombre, vm.descripcion, vm.idEspacio, vm.urlImagen, vm.idModulo,vm.entradaModulo);
+		Dispositivos.insertar(vm.nombre, vm.descripcion, vm.idEspacio, vm.urlImagen, vm.idModulo,vm.entradaModulo).then(function(res){
+			
+			$state.go('app.inicio.dispositivos');
+			
+		},function(err){});
 		//$state.go("app.inicio.dispositivos");
 		//alert("ALTA");
 		
@@ -347,21 +387,17 @@ Dispositivos.lista().then(
 })
 
 
-.controller('AcercaDeCtrl', function($scope, $ionicPlatform, $cordovaToast, FactoryDB) {
+.controller('AcercaDeCtrl', function($scope,$state, $ionicPlatform, $cordovaToast, FactoryDB) {
 	
 	var vm = this;
 	
-	$cordovaToast.show('DB!', 'long', 'center');
-	FactoryDB.peopleInsertar("PURO", "PPPP");
-
-	vm.select = function()
-	{
-		FactoryDB.peopleSeleccionar("PPPP").then( 
-			function(res){
-							vm.lista = res;
-						});
-						
-	}
+	vm.back=back;
+	
+	function back () {
+		$state.go('app.inicio.espacios')
+		}
+	
+	
 
 })
 
