@@ -144,11 +144,40 @@ $scope.$on('$ionicView.enter', function(e) {
 })
 
 
-.controller('DispositivosCtrl', function($rootScope,$scope, Dispositivos) {
+.controller('DispositivosCtrl', function($rootScope,$state, $scope, Dispositivos, $ionicPopover) {
 	
 var vm = this;
-		
+var onholdPresionado = false;
 
+vm.openPopover = function(event){
+	onholdPresionado = true;
+	$scope.popover.show(event);
+//	event.stopPropagation();
+}
+
+vm.mostrarDispositivo = function(idDispositivo){
+	if(!onholdPresionado)
+	{
+		var parametrosActuales = {id:idDispositivo}	
+		$state.go("app.dispositivo", {parametros:parametrosActuales});
+	}
+	else
+		onholdPresionado = false;
+}
+
+$ionicPopover.fromTemplateUrl('templates/popover.html', {
+    scope: $scope,
+  }).then(function(popover) {
+    $scope.popover = popover;
+  });
+
+/*
+vm.onhold = function(){
+	
+	alert("on hold");
+	
+}	
+*/
 			/*$rootScope.$on('$stateChangeStart', 
 function(event, toState, toParams, fromState, fromParams){ 
 

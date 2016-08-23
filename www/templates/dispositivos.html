@@ -3,7 +3,7 @@
 	
 	
 	<div class="list">
-		<a ng-repeat="dispositivo in di.lista" class="item item-thumbnail-left" href="#/app/dispositivos/{{dispositivo.id}}">
+		<a ng-repeat="dispositivo in di.lista" class="item item-thumbnail-left" on-hold="di.openPopover($event)" ng-click="di.mostrarDispositivo(dispositivo.id)">
 		  <img ng-src="{{dispositivo.urlImagen}}">
 		  <h2>{{dispositivo.nombre}}</h2>
 		  <h2>{{dispositivo.descripcion}}</h2>
@@ -14,10 +14,34 @@
 
   </ion-content>
   
-  <md-button class="md-fab float-button" aria-label="Alta Dispositivo" href="#/app/dispositivoAlta">
-		
+  <md-button class="md-fab float-button" aria-label="Alta Dispositivo" href="#/app/dispositivoAlta">		
 		<div class="content">
             <i style="font-size:20px" class="fa fa-plus"></i>
 			</div>
     </md-button>
+
+		<script id="templates/popover.html" type="text/ng-template">
+ <ion-popover-view>
+        <ion-content>
+          <div class="list">
+            <a class="item" href="http://learn.ionicframework.com/" target="_blank">
+              Learn Ionic
+            </a>
+            <a class="item" href="http://ionicframework.com/docs/" target="_blank">
+              Documentation
+            </a>
+            <a class="item" href="http://showcase.ionicframework.com/" target="_blank">
+              Showcase
+            </a>
+            <a class="item" href="http://ionicframework.com/submit-issue/" target="_blank">
+              Submit an Issue
+            </a>
+            <a class="item" href="https://github.com/driftyco/ionic" target="_blank">
+              Github Repo
+            </a>
+          </div>
+        </ion-content>
+      </ion-popover-view>
+</script>
 </ion-view>
+

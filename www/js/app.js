@@ -7,7 +7,7 @@
 
 
 
-angular.module('starter', ['ionic', 'starter.controllers','starter.services', 'ngMaterial', 'ngCordova' ])
+angular.module('starter', ['ionic', 'starter.controllers','starter.services', 'ngMaterial', 'ngCordova', 'ngMask' ])
 
 .run(function($rootScope,$state,$ionicPlatform, $cordovaSQLite, $ionicHistory,FactoryDB) {
   $ionicPlatform.ready(function() {
@@ -88,6 +88,7 @@ angular.module('starter', ['ionic', 'starter.controllers','starter.services', 'n
 	
 	.state('app.dispositivo', {
     url: '/dispositivos/:dispositivoId',
+    params:{parametros:null},
     views: {
       'menuContent': {
         templateUrl: 'templates/dispositivo.html',
