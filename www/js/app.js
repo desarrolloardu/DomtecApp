@@ -7,7 +7,7 @@
 
 
 
-angular.module('starter', ['ionic', 'starter.controllers','starter.services', 'ngMaterial', 'ngCordova' ])
+angular.module('starter', ['ionic', 'starter.controllers','starter.services', 'ngMaterial', 'ngCordova', 'ngMask' ])
 
 .run(function($rootScope,$state,$ionicPlatform, $cordovaSQLite, $ionicHistory,FactoryDB) {
   $ionicPlatform.ready(function() {
@@ -39,6 +39,8 @@ angular.module('starter', ['ionic', 'starter.controllers','starter.services', 'n
       
       $state.go('app.inicio.espacios');
       
+    
+      
     }else {
       $rootScope.backButtonPressedOnceToExit = true;
       window.plugins.toast.showShortCenter(
@@ -51,7 +53,7 @@ angular.module('starter', ['ionic', 'starter.controllers','starter.services', 'n
     e.preventDefault();
     return false;
     
-    } ,101)
+    } ,100)
 	
 	FactoryDB.inicializarDB().then(function(){
 	  
@@ -87,6 +89,7 @@ angular.module('starter', ['ionic', 'starter.controllers','starter.services', 'n
 	
 	.state('app.dispositivo', {
     url: '/dispositivos/:dispositivoId',
+    params:{parametros:null},
     views: {
       'menuContent': {
         templateUrl: 'templates/dispositivo.html',
@@ -173,7 +176,7 @@ angular.module('starter', ['ionic', 'starter.controllers','starter.services', 'n
   .state('app.espacioAlta', {
       url: '/espacioAlta',
 	  params:{parametros:null},
-	  cache: false,
+	  //cache: false,
       views: {
         'menuContent': {
           templateUrl: 'templates/espacioAlta.html',

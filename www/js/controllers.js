@@ -174,11 +174,40 @@ $scope.$on('$ionicView.enter', function(e) {
 })
 
 
-.controller('DispositivosCtrl', function($rootScope,$scope, Dispositivos) {
+.controller('DispositivosCtrl', function($rootScope,$state, $scope, Dispositivos, $ionicPopover) {
 	
 var vm = this;
-		
+//var onholdPresionado = false;
 
+vm.openPopover = function(event){
+	//onholdPresionado = true;
+	$scope.popover.show(event);
+//	event.stopPropagation();
+}
+
+vm.mostrarDispositivo = function(idDispositivo){
+	//if(!onholdPresionado)
+	//{
+		var parametrosActuales = {id:idDispositivo}	
+		$state.go("app.dispositivo", {parametros:parametrosActuales});
+	//}
+	//else
+	//	onholdPresionado = false;
+}
+
+$ionicPopover.fromTemplateUrl('templates/popover.html', {
+    scope: $scope,
+  }).then(function(popover) {
+    $scope.popover = popover;
+  });
+
+/*
+vm.onhold = function(){
+	
+	alert("on hold");
+	
+}	
+*/
 			/*$rootScope.$on('$stateChangeStart', 
 function(event, toState, toParams, fromState, fromParams){ 
 
@@ -291,28 +320,43 @@ Dispositivos.lista().then(
 
 })
 
-.controller('DispositivoAltaCtrl', function($scope,$ionicModal,Dispositivos, Espacios, Modulos, $state, $stateParams,$ionicHistory) {
+.controller('DispositivoAltaCtrl', function($scope,$ionicModal,$ionicPlatform,Dispositivos, Espacios, Modulos,Imagenes, $state, $stateParams,$ionicHistory) {
 
 	var vm = this;
 	
-	vm.back=back;
 	
-	function back () {
+	
+	vm.back= function () {
 		$ionicHistory.goBack();
 		};
 	
-	$ionicModal.fromTemplateUrl('js/my-modal.html', {
+	$ionicModal.fromTemplateUrl('templates/my_modal.html', {
     scope: $scope,
     animation: 'slide-in-up'
   }).then(function(modal) {
-    $scope.modal = modal;
+    $scope.modalImagenes = modal;
   });
+  
+  
+	
+	$scope.imagenes=Imagenes.dispositivos();
+	
+	$scope.seleccionarImagen = function(imagen){
+		
+		vm.urlImagen=imagen.urlImagen;
+		vm.descImagen=imagen.desc;
+		vm.codImagen=imagen.cod;
+	$scope.modalImagenes.hide();	
+		
+		
+	}
 	
 	
 	vm.urlImagen = "./img/ionic.png";
 	
-	if($stateParams.parametros != null)
+	/*if($stateParams.parametros != null)
 	{
+		
 		vm.nombre = $stateParams.parametros.nombre;
 		vm.descripcion = $stateParams.parametros.descripcion;
 		vm.idEspacio = $stateParams.parametros.idEspacio;
@@ -322,6 +366,7 @@ Dispositivos.lista().then(
 		vm.idModulo= $stateParams.parametros.idModulo;
 		vm.entradaModulo= $stateParams.parametros.entradaModulo;	
 	}
+	*/
 	
 	Espacios.lista().then(function(res){
 		vm.lista = res;
@@ -346,10 +391,9 @@ Dispositivos.lista().then(
 	};
 
 	vm.seleccionarImagen = function(){
-		//$scope.modal.show();
-		alert(vm.entradaModulo);
-		var parametrosActuales = {nombre:vm.nombre, descripcion:vm.descripcion, idEspacio:vm.idEspacio, urlImagen:vm.urlImagen, idModulo:vm.idModulo, entradaModulo:vm.entradaModulo, codigoGaleria:'dispositivos'}	
-		$state.go("app.imagenes", {parametros:parametrosActuales});
+		$scope.modalImagenes.show();
+		//var parametrosActuales = {nombre:vm.nombre, descripcion:vm.descripcion, idEspacio:vm.idEspacio, urlImagen:vm.urlImagen, idModulo:vm.idModulo, entradaModulo:vm.entradaModulo, codigoGaleria:'dispositivos'}	
+		//$state.go("app.imagenes", {parametros:parametrosActuales});
 	}
 	
 })

@@ -8,6 +8,7 @@
     "ionic-material": "^0.4.2",
     "angular-material": "^1.0.9",
     "font-awesome": "fontawesome#^4.6.3",
-    "material-design-lite": "^1.2.0"
+    "material-design-lite": "^1.2.0",
+    "ngMask": "angular-mask#^3.1.1"
   }
 }
