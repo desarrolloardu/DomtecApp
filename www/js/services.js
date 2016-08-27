@@ -174,6 +174,20 @@ function actualizarLista () {
 				return q.promise;
 			},
 			
+			
+				seleccionarId: function(id) {
+			
+			var listaTemp = lista.filter(function(elem){
+				
+				return elem.id == id
+				
+			})
+			
+			return listaTemp[0];
+			
+		}
+			
+		/*	
 	seleccionarId: function(id){
 				var q = $q.defer();
 				var respuesta = [];
@@ -200,7 +214,7 @@ function actualizarLista () {
 						}
 					)
 				return q.promise;
-			}
+			} */
 
 	}
 	
@@ -320,6 +334,20 @@ function actualizarLista () {
 				
 			},
 			
+			
+			seleccionarId: function(id) {
+			
+			var listaTemp = lista.filter(function(elem){
+				
+				return elem.id == id
+				
+			})
+			
+			return listaTemp[0];
+			
+		},
+			
+			/*
 			seleccionarId: function(id){
 				var q = $q.defer();
 				var respuesta = [];
@@ -353,7 +381,7 @@ function actualizarLista () {
 				
 				return listaTipoModulos;
 				
-			},
+			},*/
 			
 			
 			
@@ -466,7 +494,6 @@ function actualizarLista () {
 		},
 
 		actualizar: function(id, nombre, descripcion, idEspacio, urlImagen,idModulo, entradaModulo){
-			alert(id);
 			var q = $q.defer();
 			var query = "UPDATE dispositivos SET nombre = ?, descripcion = ?, idEspacio = ?, urlImagen = ?,idModulo = ?, entradaModulo = ? WHERE id = ?";
 			$cordovaSQLite.execute(db, query, [nombre, descripcion, idEspacio, urlImagen, idModulo, entradaModulo, id])
@@ -517,6 +544,21 @@ function actualizarLista () {
 			
 		},
 		
+		
+		seleccionarId: function(id) {
+			
+			var listaTemp = lista.filter(function(elem){
+				
+				return elem.id == id
+				
+			})
+			
+			return listaTemp[0];
+			
+		}
+		
+		
+		/*
 		seleccionarId: function(id){
 			var q = $q.defer();
 			var respuesta = [];
@@ -543,7 +585,7 @@ function actualizarLista () {
 					}
 				)
 			return q.promise;
-		}		
+		}	*/	
 	}
 		
 	return interfaz;
