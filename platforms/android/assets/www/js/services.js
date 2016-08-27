@@ -126,7 +126,7 @@ function actualizarLista () {
 			},
 
 	actualizar: function(id, descripcion, urlImagen){
-			alert(id);
+			//alert(id);
 			var q = $q.defer();
 			var query = "UPDATE espacios SET descripcion = ?, urlImagen = ? WHERE id = ?";
 			$cordovaSQLite.execute(db, query, [descripcion, urlImagen, id])
