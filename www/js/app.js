@@ -116,17 +116,14 @@ angular.module('starter', ['ionic', 'starter.controllers','starter.services', 'n
 	
 	.state('app.modulos', {
       url: '/modulos',
-	  module:'modulos',
-	  views: {
-        'menuContent': {
-			
-          templateUrl: 'templates/modulos.html',
-		  
-		  
-          controller: 'ModulosCtrl',
-		  controllerAs: 'mo' 
+      module:'modulos',
+      views: {
+          'menuContent': {     
+            templateUrl: 'templates/modulos.html',
+            controller: 'ModulosCtrl',
+            controllerAs: 'mo' 
+          }
         }
-      }
     })
 	
 	.state('app.modulo', {
@@ -141,6 +138,8 @@ angular.module('starter', ['ionic', 'starter.controllers','starter.services', 'n
 	
 	.state('app.moduloAlta', {
       url: '/moduloAlta',
+      params:{parametros:null},
+	    cache: false,
       views: {
         'menuContent': {
           templateUrl: 'templates/moduloAlta.html',

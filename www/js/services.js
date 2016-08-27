@@ -151,6 +151,33 @@ function actualizarLista () {
 				)
 			return q.promise;
 		},
+
+	eliminar: function(id){
+			var q = $q.defer();
+			var query = "DELETE FROM espacios WHERE id = ?";
+			$cordovaSQLite.execute(db, query, [id])
+			.then(
+					function(res) {
+							
+							actualizarLista().then(function(res){
+									
+								var lista=res;	
+								q.resolve(res);	
+									
+								},function(err){
+									
+									q.reject(err);		
+								})		
+							
+						},
+					function (err) {
+						$cordovaToast.show("ERROR DELETE", 'long', 'center');
+						q.reject(err);
+						}
+				)
+			return q.promise;
+		},
+
 			
 	lista: function(){
 				
@@ -286,10 +313,10 @@ function actualizarLista () {
 		};
 	
 	var interfaz = {
-			insertar: function(uuid, clave, descripcion, idModuloTipo, urlImagen){
+			insertar: function(uuid, clave, descripcion, idModuloTipo){
 				var q = $q.defer();
-				var query = "INSERT INTO modulos (uuid, clave, descripcion, idModuloTipo, urlImagen) VALUES (?,?,?,?,?)";
-				$cordovaSQLite.execute(db, query, [uuid, clave, descripcion, idModuloTipo, urlImagen])
+				var query = "INSERT INTO modulos (uuid, clave, descripcion, idModuloTipo) VALUES (?,?,?,?)";
+				$cordovaSQLite.execute(db, query, [uuid, clave, descripcion, idModuloTipo])
 				.then(
 						function(res) {
 								actualizarLista().then(function(res){
@@ -311,6 +338,59 @@ function actualizarLista () {
 				return q.promise;
 			},
 			
+			actualizar: function(id, uuid, clave, descripcion, idModuloTipo){
+				//alert(id);
+				var q = $q.defer();
+				var query = "UPDATE modulos SET uuid = ?, clave = ?, descripcion = ?, idModuloTipo = ? WHERE id = ?";
+				$cordovaSQLite.execute(db, query, [uuid, clave, descripcion, idModuloTipo, id])
+				.then(
+						function(res) {
+								
+								actualizarLista().then(function(res){
+										
+									var lista=res;	
+									q.resolve(res);	
+										
+									},function(err){
+										
+										q.reject(err);		
+									})		
+								
+							},
+						function (err) {
+							$cordovaToast.show(err, 'long', 'center');
+							q.reject(err);
+							}
+					)
+				return q.promise;
+			},
+
+			eliminar: function(id){
+				var q = $q.defer();
+				var query = "DELETE FROM modulos WHERE id = ?";
+				$cordovaSQLite.execute(db, query, [id])
+				.then(
+						function(res) {
+								
+								actualizarLista().then(function(res){
+										
+									var lista=res;	
+									q.resolve(res);	
+										
+									},function(err){
+										
+										q.reject(err);		
+									})		
+								
+							},
+						function (err) {
+							$cordovaToast.show("ERROR DELETE", 'long', 'center');
+							q.reject(err);
+							}
+					)
+				return q.promise;
+			},
+
 			lista: function(){
 				
 				var q = $q.defer();
@@ -452,7 +532,7 @@ function actualizarLista () {
 							$cordovaToast.show("No results found", 'long', 'center');
 						}
 					//	alert(respuesta[0].clave);
-					lista=respuesta;
+						lista=respuesta;
 						q.resolve(respuesta);
 					},
 					function (err) {
@@ -494,6 +574,10 @@ function actualizarLista () {
 		},
 
 		actualizar: function(id, nombre, descripcion, idEspacio, urlImagen,idModulo, entradaModulo){
+<<<<<<< HEAD
+=======
+		//	alert(id);
+>>>>>>> origin/master
 			var q = $q.defer();
 			var query = "UPDATE dispositivos SET nombre = ?, descripcion = ?, idEspacio = ?, urlImagen = ?,idModulo = ?, entradaModulo = ? WHERE id = ?";
 			$cordovaSQLite.execute(db, query, [nombre, descripcion, idEspacio, urlImagen, idModulo, entradaModulo, id])
@@ -519,6 +603,32 @@ function actualizarLista () {
 			return q.promise;
 		},
 		
+		eliminar: function(id){
+			var q = $q.defer();
+			var query = "DELETE FROM dispositivos WHERE id = ?";
+			$cordovaSQLite.execute(db, query, [id])
+			.then(
+					function(res) {
+							
+							actualizarLista().then(function(res){
+									
+								var lista=res;	
+								q.resolve(res);	
+									
+								},function(err){
+									
+									q.reject(err);		
+								})		
+							
+						},
+					function (err) {
+						$cordovaToast.show("ERROR DELETE", 'long', 'center');
+						q.reject(err);
+						}
+				)
+			return q.promise;
+		},
+
 		lista: function(){
 			
 			var q = $q.defer();

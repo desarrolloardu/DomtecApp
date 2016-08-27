@@ -48,7 +48,7 @@ angular.module('starter.controllers', [])
   
 })
 
-.controller('ModulosCtrl', function($rootScope,$scope,$state,Modulos,$cordovaToast) {
+.controller('ModulosCtrl', function($rootScope, $scope, $state, Modulos, $cordovaToast, $ionicPopover) {
 
 	var vm = this;
 	
@@ -57,46 +57,60 @@ angular.module('starter.controllers', [])
 	function back () {
 		$state.go('app.inicio.espacios')
 		}
-	
-	
-	
-	
+
 	vm.tipoModulos=Modulos.tipoModulos();
-	
-	
-	
-	 /*$rootScope.$on('$stateChangeStart', 
-function(event, toState, toParams, fromState, fromParams){ 
 
-if(toState.module=='modulos'){
-	
-	Modulos.lista().then( 
-			function(res){
-							if(!angular.equals(vm.lista,res))
-			vm.lista = res;
-						});
-
-	
+	vm.openPopoverModulos = function(event, moduloId){
+		//alert("openPopoverModulos");
+		$scope.moduloIdSeleccionado = moduloId;
+		$scope.popover.show(event);
 	}
 
- });*/
+	$scope.editarModulo = function(){
+		$scope.popover.hide();
+
+		var listaFiltrada = vm.lista.filter(function(elem){
+			return (elem.id == $scope.moduloIdSeleccionado);
+		}) 
+
+		//alert('listaFiltrada id: ' + listaFiltrada[0].id);
+		var parametrosActuales = {id:listaFiltrada[0].id, descripcion:listaFiltrada[0].descripcion, uuid:listaFiltrada[0].uuid, clave:listaFiltrada[0].clave, idModuloTipo:listaFiltrada[0].idModuloTipo, urlImagen:listaFiltrada[0].urlImagen};	
+		
+		//alert('parametrosActuales id: ' + parametrosActuales.id);
+		$state.go("app.moduloAlta", {parametros:parametrosActuales});
+
+	}
+
+	$scope.eliminarModulo= function(){
+		//alert("eliminar");
+		$scope.popover.hide();
+		Modulos.eliminar($scope.moduloIdSeleccionado).then( 
+				function(res){
+								//alert("lista");
+								vm.lista = res;
+							});
+	}
+
+	$ionicPopover.fromTemplateUrl('templates/popoverModulos.html', {
+		scope: $scope,
+	}).then(function(popover) {
+		$scope.popover = popover;
+	});
+ 
+	$scope.$on('$ionicView.enter', function(e) {
+		Modulos.lista().then( 
+					function(res){
+									//alert("lista");
+									vm.lista = res;
+								});
+	});
 	
-$scope.$on('$ionicView.enter', function(e) {
-	
-	Modulos.lista().then( 
-			function(res){
-							vm.lista = res;
-						});
-						
-	
-						
-});				
-						
 		
 })
 
-.controller('ModuloAltaCtrl', function($ionicHistory,Modulos) {
 
+.controller('ModuloAltaCtrl', function($scope, $stateParams, $state, $ionicPlatform, $ionicHistory, Modulos) {
+//alert("ModuloAltaCtrl");
 	var vm = this;
 	vm.lista=Modulos.tipoModulos();
 	
@@ -107,18 +121,49 @@ $scope.$on('$ionicView.enter', function(e) {
 		};
 	
 	
-	
-
 	vm.alta = function(){
 		
-		Modulos.insertar(vm.uuid,vm.descripcion,vm.clave,vm.selectTipo).then(function(res){
+		if($stateParams.parametros == null)
+		{
+			//alert("insertar");
+			Modulos.insertar(vm.uuid,vm.clave,vm.descripcion,vm.selectTipo).then(function(res){
+		//	Espacios.insertar(vm.descripcion,vm.urlImagen).then(function(res){
+		
+			$state.go('app.modulos');
+			
+			},function(err){});
+		}
+		else
+		{
+			//alert("actualizar");
+			Modulos.actualizar(vm.id, vm.uuid, vm.clave, vm.descripcion, vm.selectTipo).then(function(res){
 			
 			$state.go('app.modulos');
 			
-		},function(err){});
-		
-		
-	}
+			},function(err){});
+		}
+	};
+
+	$scope.$on('$ionicView.enter', function(e) {
+		//alert("enter");
+		if($stateParams.parametros == null)
+		{
+			//alert("ALTA");
+			vm.descripcion = undefined;
+			vm.uuid = undefined;
+			vm.clave = undefined;
+			vm.selectTipo = undefined;
+		}
+		else
+		{
+			//alert("MODIF");
+			vm.descripcion = $stateParams.parametros.descripcion;
+			vm.uuid = $stateParams.parametros.uuid;
+			vm.clave = $stateParams.parametros.clave;
+			vm.selectTipo = $stateParams.parametros.idModuloTipo.toString();
+			vm.id = $stateParams.parametros.id;
+		}
+	});
 	
 })
 
@@ -260,17 +305,19 @@ $scope.editarDispositivo = function(){
 	
 }
 
+$scope.eliminarDispositivo= function(){
+	//alert("eliminar");
+	$scope.popover.hide();
+	Dispositivos.eliminar($scope.dispositivoIdSeleccionado).then( 
+			function(res){
+							//alert("lista");
+							vm.lista = res;
+						});
+}
+
 vm.mostrarDispositivo = function(idDispositivo){
-	//if(!onholdPresionado)
-	//{
-
-
-		
 		var parametrosActuales = {id:idDispositivo}	
 		$state.go("app.dispositivo", {parametros:parametrosActuales});
-	//}
-	//else
-	//	onholdPresionado = false;
 }
 
 $ionicPopover.fromTemplateUrl('templates/popover.html', {
@@ -559,6 +606,16 @@ $scope.editarEspacio = function(){
 	alert($scope.espacioIdSeleccionado);
 	$state.go("app.espacioAlta", {id:$scope.espacioIdSeleccionado});
 
+}
+
+$scope.eliminarEspacio= function(){
+	//alert("eliminar");
+	$scope.popover.hide();
+	Espacios.eliminar($scope.espacioIdSeleccionado).then( 
+			function(res){
+							//alert("lista");
+							vm.lista = res;
+						});
 }
 
 $ionicPopover.fromTemplateUrl('templates/popoverEspacios.html', {
