@@ -4,7 +4,7 @@
 <ion-content >
 
 	<div class="list">
-		<a ng-repeat="espacio in es.lista" class="item item-thumbnail-left" href="#/app/espacios/{{espacio.id}}">
+		<a ng-repeat="espacio in es.lista" class="item item-thumbnail-left" on-hold="es.openPopoverEspacios($event, espacio.id)">
 		  <img ng-src="{{espacio.urlImagen}}">
 		  <h2>{{espacio.descripcion}}</h2>
 		  <h2>{{espacio.urlImagen}}</h2>
@@ -18,6 +18,18 @@
             <i style="font-size:20px" class="fa fa-plus"></i>
 			</div>
     </md-button>
+
+		<script id="templates/popoverEspacios.html" type="text/ng-template">
+			<ion-popover-view>
+				<ion-content>
+					<div class="list">
+						<a class="item" ng-click="editarEspacio();">
+							Editar
+						</a>
+					</div>
+				</ion-content>
+			</ion-popover-view>
+		</script>
   
   </ion-view>
   

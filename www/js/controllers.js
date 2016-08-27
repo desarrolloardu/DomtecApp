@@ -156,21 +156,54 @@ $scope.$on('$ionicView.enter', function(e) {
 		vm.descImagen= $stateParams.parametros.descImagen;
 		vm.codImagen= $stateParams.parametros.codImagen;
 	}
-
-	vm.alta = function(){	
-		Espacios.insertar(vm.descripcion,vm.urlImagen).then(function(res){
-			
-			
-			$state.go('app.inicio.espacios');
-			
-		},function(err){});
-	}
 	
 	vm.seleccionarImagen = function(){
 		//alert("seleccionarImagen");
 		var parametrosActuales = {descripcion:vm.descripcion, urlImagen:vm.urlImagen, codigoGaleria:'espacios'}	
 		$state.go("app.imagenes", {parametros:parametrosActuales});
 	}
+
+
+	vm.alta = function(){
+		
+		if($stateParams.parametros == null)
+		{
+			Espacios.insertar(vm.descripcion,vm.urlImagen).then(function(res){
+		
+			$state.go('app.inicio.espacios');
+			
+			},function(err){});
+		}
+		else
+		{
+			Espacios.actualizar(vm.id, vm.descripcion, vm.urlImagen).then(function(res){
+			
+			$state.go('app.inicio.espacios');
+			
+			},function(err){});
+		}
+	};
+
+	$scope.$on('$ionicView.enter', function(e) {
+		//$state.reload();
+		if($stateParams.parametros == null)
+		{
+			alert("ALTA");
+			vm.descripcion = undefined;
+			vm.urlImagen = './img/ionic.png';
+			vm.descImagen= undefined;
+			vm.codImagen= undefined;
+		}
+		else
+		{
+			alert("MODIF");
+			vm.descripcion = $stateParams.parametros.descripcion;
+			vm.urlImagen = $stateParams.parametros.urlImagen;
+			vm.descImagen= $stateParams.parametros.descImagen;
+			vm.codImagen= $stateParams.parametros.codImagen;
+			vm.id = $stateParams.parametros.id;
+		}
+	});
 })
 
 
@@ -220,32 +253,6 @@ $ionicPopover.fromTemplateUrl('templates/popover.html', {
   }).then(function(popover) {
     $scope.popover = popover;
   });
-
-/*
-vm.onhold = function(){
-	
-	alert("on hold");
-	
-}	
-*/
-			/*$rootScope.$on('$stateChangeStart', 
-function(event, toState, toParams, fromState, fromParams){ 
-
-
-	if(toState.module=='dispositivos'){
-	
-		Dispositivos.lista().then( 
-			function(res){
-							if(!angular.equals(vm.lista,res))
-								vm.lista = res;
-							
-						});
-
-					
-					}
-
- }); */
- 
  
  $scope.$on('$ionicView.enter', function(e) {
   
@@ -497,60 +504,49 @@ vm.entradaModulo=1;
 .controller('InicioCtrl', function($scope, $ionicPlatform, $cordovaToast, FactoryDB) {
 	
 	var vm = this;
-	
-	
-	//$cordovaToast.show('DB!', 'long', 'center');
-/*	
-	FactoryDB.peopleInsertar("PURO", "PPPP");
-
-	vm.select = function()
-	{
-		FactoryDB.peopleSeleccionar("PPPP").then( 
-			function(res){
-							vm.lista = res;
-						});
-						
-	}
-*/
 })
 
 
+.controller('EspaciosCtrl', function($rootScope, $state, $scope, Espacios, $ionicPopover) {
 
-.controller('EspaciosCtrl', function($rootScope,$scope, Espacios) {
-	
-	var vm = this;
-	
-	
-	
-/*	$rootScope.$on('$stateChangeStart', 
-function(event, toState, toParams, fromState, fromParams){ 
+var vm = this;
+//var onholdPresionado = false;
 
-if(toState.module=='espacios'){
-	
-	Espacios.lista().then( 
-			function(res){
-				
-				if(!angular.equals(vm.lista,res))
-			vm.lista = res;
-						});
+vm.openPopoverEspacios = function(event, espacioId){
+	$scope.espacioIdSeleccionado = espacioId;
+	$scope.popover.show(event);
+}
 
-	
-	}
+$scope.editarEspacio = function(){
+	$scope.popover.hide();
 
- }); */
- 
+	var listaFiltrada = vm.lista.filter(function(elem){
+		return (elem.id == $scope.espacioIdSeleccionado);
+	}) 
+
+	alert('listaFiltrada id: ' + listaFiltrada[0].id);
+	var parametrosActuales = {id:listaFiltrada[0].id, descripcion:listaFiltrada[0].descripcion, urlImagen:listaFiltrada[0].urlImagen};	
+	
+	//alert('parametrosActuales id: ' + parametrosActuales.id);
+	$state.go("app.espacioAlta", {parametros:parametrosActuales});
+
+}
+
+$ionicPopover.fromTemplateUrl('templates/popoverEspacios.html', {
+    scope: $scope,
+  }).then(function(popover) {
+    $scope.popover = popover;
+  });
  
  $scope.$on('$ionicView.enter', function(e) {
-	
-	
 	Espacios.lista().then( 
-			function(res){
-							//alert("lista");
-							vm.lista = res;
-						});
-						
- })			
-						
+				function(res){
+								//alert("lista");
+								vm.lista = res;
+							});
+});
+	
+
 })
 
 

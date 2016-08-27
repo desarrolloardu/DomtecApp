@@ -124,8 +124,35 @@ function actualizarLista () {
 					)
 				return q.promise;
 			},
+
+	actualizar: function(id, descripcion, urlImagen){
+			alert(id);
+			var q = $q.defer();
+			var query = "UPDATE espacios SET descripcion = ?, urlImagen = ? WHERE id = ?";
+			$cordovaSQLite.execute(db, query, [descripcion, urlImagen, id])
+			.then(
+					function(res) {
+							
+							actualizarLista().then(function(res){
+									
+								var lista=res;	
+								q.resolve(res);	
+									
+								},function(err){
+									
+									q.reject(err);		
+								})		
+							
+						},
+					function (err) {
+						$cordovaToast.show(err, 'long', 'center');
+						q.reject(err);
+						}
+				)
+			return q.promise;
+		},
 			
-			lista: function(){
+	lista: function(){
 				
 			var q = $q.defer();
 			if(lista) {
@@ -147,7 +174,7 @@ function actualizarLista () {
 				return q.promise;
 			},
 			
-			seleccionarId: function(id){
+	seleccionarId: function(id){
 				var q = $q.defer();
 				var respuesta = [];
 				var query = "SELECT * FROM espacios WHERE id = ?";
