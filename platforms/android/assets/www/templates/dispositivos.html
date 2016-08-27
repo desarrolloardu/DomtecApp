@@ -3,7 +3,7 @@
 	
 	
 	<div class="list">
-		<a ng-repeat="dispositivo in di.lista" class="item item-thumbnail-left" on-hold="di.openPopover($event)" on-tap="di.mostrarDispositivo(dispositivo.id)">
+		<a ng-repeat="dispositivo in di.lista" class="item item-thumbnail-left" on-hold="di.openPopover($event, dispositivo.id)" on-tap="di.mostrarDispositivo(dispositivo.id)">
 		  <img ng-src="{{dispositivo.urlImagen}}">
 		  <h2>{{dispositivo.nombre}}</h2>
 		  <h2>{{dispositivo.descripcion}}</h2>
@@ -24,8 +24,8 @@
  <ion-popover-view>
         <ion-content>
           <div class="list">
-            <a class="item" href="http://learn.ionicframework.com/" target="_blank">
-              Learn Ionic
+            <a class="item" ng-click="editarDispositivo();">
+              Editar
             </a>
             <a class="item" href="http://ionicframework.com/docs/" target="_blank">
               Documentation

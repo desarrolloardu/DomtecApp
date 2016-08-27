@@ -102,7 +102,8 @@ angular.module('starter', ['ionic', 'starter.controllers','starter.services', 'n
 	.state('app.dispositivoAlta', {
       url: '/dispositivoAlta',
 	  params:{parametros:null},
-	  //cache: false,
+   // reloadOnSearch: false,
+	  cache: false,
       views: {
         'menuContent': {
           templateUrl: 'templates/dispositivoAlta.html',
@@ -111,6 +112,8 @@ angular.module('starter', ['ionic', 'starter.controllers','starter.services', 'n
         }
       }
     })
+
+   
 	
 	.state('app.modulos', {
       url: '/modulos',

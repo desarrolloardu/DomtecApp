@@ -437,6 +437,33 @@ function actualizarLista () {
 				)
 			return q.promise;
 		},
+
+		actualizar: function(id, nombre, descripcion, idEspacio, urlImagen,idModulo, entradaModulo){
+			alert(id);
+			var q = $q.defer();
+			var query = "UPDATE dispositivos SET nombre = ?, descripcion = ?, idEspacio = ?, urlImagen = ?,idModulo = ?, entradaModulo = ? WHERE id = ?";
+			$cordovaSQLite.execute(db, query, [nombre, descripcion, idEspacio, urlImagen, idModulo, entradaModulo, id])
+			.then(
+					function(res) {
+							
+							actualizarLista().then(function(res){
+									
+								var lista=res;	
+								q.resolve(res);	
+									
+								},function(err){
+									
+									q.reject(err);		
+								})		
+							
+						},
+					function (err) {
+						$cordovaToast.show(err, 'long', 'center');
+						q.reject(err);
+						}
+				)
+			return q.promise;
+		},
 		
 		lista: function(){
 			

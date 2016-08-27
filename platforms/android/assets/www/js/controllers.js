@@ -179,15 +179,35 @@ $scope.$on('$ionicView.enter', function(e) {
 var vm = this;
 //var onholdPresionado = false;
 
-vm.openPopover = function(event){
+vm.openPopover = function(event, dispositivoId){
 	//onholdPresionado = true;
+	//alert('open popover dispositivoId: ' + dispositivoId);
+	$scope.dispositivoIdSeleccionado = dispositivoId;
 	$scope.popover.show(event);
 //	event.stopPropagation();
+}
+
+$scope.editarDispositivo = function(){
+	$scope.popover.hide();
+	//alert('editarDispositivo dispositivoId: ' + $scope.dispositivoIdSeleccionado);
+	var listaFiltrada = vm.lista.filter(function(elem){
+		return (elem.id == $scope.dispositivoIdSeleccionado);
+	}) 
+
+	//alert('listaFiltrada id: ' + listaFiltrada[0].id);
+	var parametrosActuales = {id:listaFiltrada[0].id, nombre:listaFiltrada[0].nombre, descripcion:listaFiltrada[0].descripcion, idEspacio:listaFiltrada[0].idEspacio, urlImagen:listaFiltrada[0].urlImagen, idModulo:listaFiltrada[0].idModulo,	entradaModulo:listaFiltrada[0].entradaModulo};	
+	
+	//alert('parametrosActuales id: ' + parametrosActuales.id);
+	$state.go("app.dispositivoAlta", {parametros:parametrosActuales});
+
 }
 
 vm.mostrarDispositivo = function(idDispositivo){
 	//if(!onholdPresionado)
 	//{
+
+
+		
 		var parametrosActuales = {id:idDispositivo}	
 		$state.go("app.dispositivo", {parametros:parametrosActuales});
 	//}
@@ -354,20 +374,6 @@ Dispositivos.lista().then(
 	
 	vm.urlImagen = "./img/ionic.png";
 	
-	/*if($stateParams.parametros != null)
-	{
-		
-		vm.nombre = $stateParams.parametros.nombre;
-		vm.descripcion = $stateParams.parametros.descripcion;
-		vm.idEspacio = $stateParams.parametros.idEspacio;
-		vm.urlImagen = $stateParams.parametros.urlImagen;
-		vm.descImagen= $stateParams.parametros.descImagen;
-		vm.codImagen= $stateParams.parametros.codImagen;
-		vm.idModulo= $stateParams.parametros.idModulo;
-		vm.entradaModulo= $stateParams.parametros.entradaModulo;	
-	}
-	*/
-	
 	Espacios.lista().then(function(res){
 		vm.lista = res;
 		
@@ -375,19 +381,31 @@ Dispositivos.lista().then(
 
 	Modulos.lista().then(function(res){
 		vm.listaModulos = res;
-		
+		/*setTimeout(function(){
+
+vm.entradaModulo=1;
+
+		},2000)*/
 	});
 
 	vm.alta = function(){
 		
-		Dispositivos.insertar(vm.nombre, vm.descripcion, vm.idEspacio, vm.urlImagen, vm.idModulo,vm.entradaModulo).then(function(res){
-			
-			$state.go('app.inicio.dispositivos');
-			
-		},function(err){});
-		//$state.go("app.inicio.dispositivos");
-		//alert("ALTA");
-		
+			if($stateParams.parametros == null)
+			{
+				Dispositivos.insertar(vm.nombre, vm.descripcion, vm.idEspacio, vm.urlImagen, vm.idModulo,vm.entradaModulo).then(function(res){
+				
+				$state.go('app.inicio.dispositivos');
+				
+				},function(err){});
+			}
+			else
+			{
+				Dispositivos.actualizar(vm.id, vm.nombre, vm.descripcion, vm.idEspacio, vm.urlImagen, vm.idModulo,vm.entradaModulo).then(function(res){
+				
+				$state.go('app.inicio.dispositivos');
+				
+				},function(err){});
+			}
 	};
 
 	vm.seleccionarImagen = function(){
@@ -395,6 +413,40 @@ Dispositivos.lista().then(
 		//var parametrosActuales = {nombre:vm.nombre, descripcion:vm.descripcion, idEspacio:vm.idEspacio, urlImagen:vm.urlImagen, idModulo:vm.idModulo, entradaModulo:vm.entradaModulo, codigoGaleria:'dispositivos'}	
 		//$state.go("app.imagenes", {parametros:parametrosActuales});
 	}
+
+
+	$scope.$on('$ionicView.enter', function(e) {
+		//$state.reload();
+		if($stateParams.parametros == null)
+		{
+			vm.nombre = undefined;
+			vm.descripcion = undefined;
+			vm.urlImagen = './img/ionic.png';
+			vm.idEspacio = undefined;
+			vm.idModulo = undefined;
+			vm.entradaModulo = undefined;
+			vm.descImagen= undefined;
+			vm.codImagen= undefined;
+		}
+		else
+		{
+			//alert('alta id: ' + $stateParams.parametros.id);
+			//alert('alta nombre: ' + $stateParams.parametros.nombre	);
+			
+
+			vm.nombre = $stateParams.parametros.nombre;
+			vm.descripcion = $stateParams.parametros.descripcion;
+			vm.idEspacio = $stateParams.parametros.idEspacio.toString();
+			vm.urlImagen = $stateParams.parametros.urlImagen;
+			vm.descImagen= $stateParams.parametros.descImagen;
+			vm.codImagen= $stateParams.parametros.codImagen;
+			vm.idModulo= $stateParams.parametros.idModulo.toString();
+			vm.entradaModulo= $stateParams.parametros.entradaModulo.toString();
+			vm.id = $stateParams.parametros.id;
+			//$stateParams.parametros = undefined;	
+		}
+	});
+	
 	
 })
 
@@ -440,9 +492,6 @@ Dispositivos.lista().then(
 	function back () {
 		$state.go('app.inicio.espacios')
 		}
-	
-	
-
 })
 
 .controller('InicioCtrl', function($scope, $ionicPlatform, $cordovaToast, FactoryDB) {

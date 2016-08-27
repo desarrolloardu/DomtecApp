@@ -102,7 +102,7 @@ angular.module('starter', ['ionic', 'starter.controllers','starter.services', 'n
 	.state('app.dispositivoAlta', {
       url: '/dispositivoAlta',
 	  params:{parametros:null},
-	  //cache: false,
+	  cache: false,
       views: {
         'menuContent': {
           templateUrl: 'templates/dispositivoAlta.html',
@@ -111,6 +111,8 @@ angular.module('starter', ['ionic', 'starter.controllers','starter.services', 'n
         }
       }
     })
+
+   
 	
 	.state('app.modulos', {
       url: '/modulos',
@@ -176,7 +178,7 @@ angular.module('starter', ['ionic', 'starter.controllers','starter.services', 'n
   .state('app.espacioAlta', {
       url: '/espacioAlta',
 	  params:{parametros:null},
-	  //cache: false,
+	  cache: false,
       views: {
         'menuContent': {
           templateUrl: 'templates/espacioAlta.html',
