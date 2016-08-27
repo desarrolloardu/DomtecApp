@@ -272,10 +272,10 @@ function actualizarLista () {
 		};
 	
 	var interfaz = {
-			insertar: function(uuid, clave, descripcion, idModuloTipo, urlImagen){
+			insertar: function(uuid, clave, descripcion, idModuloTipo){
 				var q = $q.defer();
-				var query = "INSERT INTO modulos (uuid, clave, descripcion, idModuloTipo, urlImagen) VALUES (?,?,?,?,?)";
-				$cordovaSQLite.execute(db, query, [uuid, clave, descripcion, idModuloTipo, urlImagen])
+				var query = "INSERT INTO modulos (uuid, clave, descripcion, idModuloTipo) VALUES (?,?,?,?)";
+				$cordovaSQLite.execute(db, query, [uuid, clave, descripcion, idModuloTipo])
 				.then(
 						function(res) {
 								actualizarLista().then(function(res){
@@ -297,6 +297,33 @@ function actualizarLista () {
 				return q.promise;
 			},
 			
+			actualizar: function(id, uuid, clave, descripcion, idModuloTipo){
+				alert(id);
+				var q = $q.defer();
+				var query = "UPDATE modulos SET uuid = ?, clave = ?, descripcion = ?, idModuloTipo = ? WHERE id = ?";
+				$cordovaSQLite.execute(db, query, [uuid, clave, descripcion, idModuloTipo, id])
+				.then(
+						function(res) {
+								
+								actualizarLista().then(function(res){
+										
+									var lista=res;	
+									q.resolve(res);	
+										
+									},function(err){
+										
+										q.reject(err);		
+									})		
+								
+							},
+						function (err) {
+							$cordovaToast.show(err, 'long', 'center');
+							q.reject(err);
+							}
+					)
+				return q.promise;
+			},
+
 			lista: function(){
 				
 				var q = $q.defer();

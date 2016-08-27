@@ -8,7 +8,7 @@
   <ion-content>
     
 	<div class="list">
-		<a ng-repeat="modulo in mo.lista" class="item item-thumbnail-left" >
+		<a ng-repeat="modulo in mo.lista" class="item item-thumbnail-left" on-hold="mo.openPopoverModulos($event, modulo.id)">
 		  <img ng-src="{{modulo.join.urlImagen}}">
 		  <h2>{{modulo.descripcion}}</h2>
 		  <h2>{{modulo.uuid}}</h2>
@@ -25,6 +25,16 @@
 			</div>
     </md-button>
   
-  
+  <script id="templates/popoverModulos.html" type="text/ng-template">
+			<ion-popover-view>
+					<ion-content>
+						<div class="list">
+							<a class="item" ng-click="editarModulo();">
+								Editar
+							</a>
+						</div>
+					</ion-content>
+			</ion-popover-view>
+	</script>
 </ion-view>
  
