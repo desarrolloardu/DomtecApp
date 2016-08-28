@@ -57,7 +57,7 @@ angular.module('starter', ['ionic', 'starter.controllers','starter.services', 'n
 	
 	FactoryDB.inicializarDB().then(function(){
 	  
-	  $state.go('app.inicio.espacios');	
+	   $state.go('app.inicio.espacios');	
 	  
   });
 	
@@ -137,9 +137,7 @@ angular.module('starter', ['ionic', 'starter.controllers','starter.services', 'n
     })
 	
 	.state('app.moduloAlta', {
-      url: '/moduloAlta',
-      params:{parametros:null},
-	    cache: false,
+      url: '/moduloAlta/:id',
       views: {
         'menuContent': {
           templateUrl: 'templates/moduloAlta.html',

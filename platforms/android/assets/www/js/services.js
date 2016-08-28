@@ -100,6 +100,8 @@ function actualizarLista () {
 
 	var interfaz = {
 		
+		actualizarLista:actualizarLista,
+		
 		insertar: function(descripcion, urlImagen){
 				var q = $q.defer();
 				var query = "INSERT INTO espacios (descripcion, urlImagen) VALUES (?,?)";
@@ -202,7 +204,7 @@ function actualizarLista () {
 			},
 			
 			
-				seleccionarId: function(id) {
+	seleccionarId: function(id) {
 			
 			var listaTemp = lista.filter(function(elem){
 				
@@ -313,6 +315,8 @@ function actualizarLista () {
 		};
 	
 	var interfaz = {
+			actualizarLista:actualizarLista,
+		
 			insertar: function(uuid, clave, descripcion, idModuloTipo){
 				var q = $q.defer();
 				var query = "INSERT INTO modulos (uuid, clave, descripcion, idModuloTipo) VALUES (?,?,?,?)";
@@ -366,8 +370,40 @@ function actualizarLista () {
 			},
 
 			eliminar: function(id){
+			
 				var q = $q.defer();
 				var query = "DELETE FROM modulos WHERE id = ?";
+				//var query2 = "DELETE FROM dispositivos WHERE idModulo = ?";
+				var query2 = "UPDATE dispositivos SET idModulo = NULL WHERE idModulo = ?";
+				
+				
+				
+				$cordovaSQLite.nestedExecute(db,query,query2,[id],[id]).then(function(res){
+					
+					actualizarLista().then(function(res){
+										
+									var lista=res;	
+									q.resolve(res);	
+										
+									},function(err){
+										
+										q.reject(err);		
+									})		
+					
+					
+					
+				},function(err){
+					
+					$cordovaToast.show("ERROR DELETE", 'long', 'center');
+							q.reject(err);	
+				})
+					
+					
+					
+					
+					
+				
+				/*
 				$cordovaSQLite.execute(db, query, [id])
 				.then(
 						function(res) {
@@ -384,10 +420,11 @@ function actualizarLista () {
 								
 							},
 						function (err) {
+							
 							$cordovaToast.show("ERROR DELETE", 'long', 'center');
 							q.reject(err);
 							}
-					)
+					)*/
 				return q.promise;
 			},
 
@@ -456,42 +493,16 @@ function actualizarLista () {
 				return q.promise;
 			},
 			
-			
+			*/
 			tipoModulos: function () {
 				
 				return listaTipoModulos;
 				
-			},*/
-			
-			
-			
-			tipoLista: function(){
-				var q = $q.defer();
-				var respuesta = [];
-				var query = "SELECT * FROM moduloTipo";
-				$cordovaSQLite.execute(db, query)
-				.then(
-						function(res) {
-							if(res.rows.length > 0) {
-								
-								for(var i=0; i<res.rows.length; i++)
-								{
-										respuesta[i] = res.rows.item(i);
-								}
-								
-								//$cordovaToast.show("SELECTED -> " + res.rows.item(0).firstname + " " + res.rows.item(0).lastname, 'long', 'center');
-							} else {
-								$cordovaToast.show("No results found", 'long', 'center');
-							}
-							q.resolve(respuesta);
-						},
-						function (err) {
-							$cordovaToast.show("ERROR SELECT", 'long', 'center');
-							q.reject(err);
-						}
-					)
-				return q.promise;
 			}
+			
+			
+			
+			
 	}
 	
 	return interfaz;
@@ -499,7 +510,7 @@ function actualizarLista () {
 
 
 
-.factory("Dispositivos", ['$cordovaSQLite', '$cordovaToast', '$rootScope', '$q','FactoryDB', 'Espacios', function($cordovaSQLite, $cordovaToast, $rootScope, $q, FactoryDB, Espacios){
+.factory("Dispositivos", ['$cordovaSQLite', '$cordovaToast', '$rootScope', '$q','FactoryDB', 'Espacios','Modulos', function($cordovaSQLite, $cordovaToast, $rootScope, $q, FactoryDB, Espacios,Modulos){
 	var lista;
 	var db = null;
 	
@@ -514,7 +525,7 @@ function actualizarLista () {
 			var respuesta = [];
 		//	var query = "SELECT d.id, d.nombre, d.descripcion, d.idEspacio, d.urlImagen, d.idModulo, d.entradaModulo, m.descripcion as moduloDescripcion FROM dispositivos d INNER JOIN modulos m ON d.idModulo = m.id";
 		//	var query = "SELECT d.id, d.nombre, d.descripcion, d.idEspacio, d.urlImagen, d.idModulo, d.entradaModulo FROM dispositivos d";
-			var query = "SELECT d.id, d.nombre, d.descripcion, d.idEspacio, d.urlImagen, d.idModulo, d.entradaModulo FROM dispositivos d";
+			var query = "SELECT d.id, d.nombre, d.descripcion, d.idEspacio, d.urlImagen, d.entradaModulo,d.idModulo, m.uuid, m.clave, m.descripcion, m.idModuloTipo FROM dispositivos d LEFT OUTER JOIN modulos m ON d.idModulo = m.id  ";
 		
 			$cordovaSQLite.execute(db, query)
 			.then(
@@ -547,6 +558,8 @@ function actualizarLista () {
 
 	var interfaz = {
 		
+		actualizarLista:actualizarLista,
+		
 		insertar: function(nombre, descripcion, idEspacio, urlImagen,idModulo, entradaModulo){
 			var q = $q.defer();
 			var query = "INSERT INTO dispositivos (nombre, descripcion, idEspacio, urlImagen,idModulo, entradaModulo) VALUES (?,?,?,?,?,?)";
@@ -574,10 +587,7 @@ function actualizarLista () {
 		},
 
 		actualizar: function(id, nombre, descripcion, idEspacio, urlImagen,idModulo, entradaModulo){
-<<<<<<< HEAD
-=======
-		//	alert(id);
->>>>>>> origin/master
+
 			var q = $q.defer();
 			var query = "UPDATE dispositivos SET nombre = ?, descripcion = ?, idEspacio = ?, urlImagen = ?,idModulo = ?, entradaModulo = ? WHERE id = ?";
 			$cordovaSQLite.execute(db, query, [nombre, descripcion, idEspacio, urlImagen, idModulo, entradaModulo, id])
@@ -723,6 +733,9 @@ function actualizarLista () {
 				var q = $q.defer();
 				try{
 					db = $cordovaSQLite.openDB({name: 'my.db', location: 'default'});
+					
+					
+					
 					} 
 					catch (e) {
 					  alert(e);
@@ -740,8 +753,9 @@ function actualizarLista () {
 	function(res) {
 		
 		
-		$cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS dispositivos (id integer primary key AUTOINCREMENT, nombre text, descripcion text, idEspacio int, urlImagen text, idModulo int, entradaModulo int)").then(
+		$cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS dispositivos (id integer primary key AUTOINCREMENT, nombre text, descripcion text, idEspacio int, urlImagen text, idModulo  int, entradaModulo int)").then(
 	function(res) {
+		
 		
 		q.resolve();
 		

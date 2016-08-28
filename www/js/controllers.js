@@ -52,50 +52,50 @@ angular.module('starter.controllers', [])
 
 	var vm = this;
 	
-	vm.back=back;
 	
-	function back () {
+	
+	vm.back= function  () {
 		$state.go('app.inicio.espacios')
 		}
 
-	vm.tipoModulos=Modulos.tipoModulos();
+	
+	$ionicPopover.fromTemplateUrl('templates/popoverModulos.html', {
+		scope: $scope,
+	}).then(function(popover) {
+		$scope.popoverModulos = popover;
+	});
 
 	vm.openPopoverModulos = function(event, moduloId){
 		//alert("openPopoverModulos");
 		$scope.moduloIdSeleccionado = moduloId;
-		$scope.popover.show(event);
+		$scope.popoverModulos.show(event);
 	}
 
 	$scope.editarModulo = function(){
-		$scope.popover.hide();
-
-		var listaFiltrada = vm.lista.filter(function(elem){
-			return (elem.id == $scope.moduloIdSeleccionado);
-		}) 
-
-		//alert('listaFiltrada id: ' + listaFiltrada[0].id);
-		var parametrosActuales = {id:listaFiltrada[0].id, descripcion:listaFiltrada[0].descripcion, uuid:listaFiltrada[0].uuid, clave:listaFiltrada[0].clave, idModuloTipo:listaFiltrada[0].idModuloTipo, urlImagen:listaFiltrada[0].urlImagen};	
-		
+		$scope.popoverModulos.hide();
 		//alert('parametrosActuales id: ' + parametrosActuales.id);
-		$state.go("app.moduloAlta", {parametros:parametrosActuales});
+		$state.go("app.moduloAlta", {id:$scope.moduloIdSeleccionado});
 
 	}
 
 	$scope.eliminarModulo= function(){
 		//alert("eliminar");
-		$scope.popover.hide();
+		$scope.popoverModulos.hide();
 		Modulos.eliminar($scope.moduloIdSeleccionado).then( 
 				function(res){
+					
+					$rootScope.$broadcast('actualizarLista:Dispositivos');
 								//alert("lista");
 								vm.lista = res;
+							
+								
+							},function(err){
+								
+								
+								
 							});
 	}
 
-	$ionicPopover.fromTemplateUrl('templates/popoverModulos.html', {
-		scope: $scope,
-	}).then(function(popover) {
-		$scope.popover = popover;
-	});
  
 	$scope.$on('$ionicView.enter', function(e) {
 		Modulos.lista().then( 
@@ -112,18 +112,18 @@ angular.module('starter.controllers', [])
 .controller('ModuloAltaCtrl', function($scope, $stateParams, $state, $ionicPlatform, $ionicHistory, Modulos) {
 //alert("ModuloAltaCtrl");
 	var vm = this;
-	vm.lista=Modulos.tipoModulos();
 	
-	vm.back=back;
+	vm.tipoModulos= Modulos.tipoModulos();
 	
-	function back () {
+	
+	vm.back = function () {
 		$ionicHistory.goBack();
 		};
 	
 	
 	vm.alta = function(){
 		
-		if($stateParams.parametros == null)
+		if(!$stateParams.id)
 		{
 			//alert("insertar");
 			Modulos.insertar(vm.uuid,vm.clave,vm.descripcion,vm.selectTipo).then(function(res){
@@ -145,8 +145,8 @@ angular.module('starter.controllers', [])
 	};
 
 	$scope.$on('$ionicView.enter', function(e) {
-		//alert("enter");
-		if($stateParams.parametros == null)
+		
+		if(!$stateParams.id)
 		{
 			//alert("ALTA");
 			vm.descripcion = undefined;
@@ -156,12 +156,18 @@ angular.module('starter.controllers', [])
 		}
 		else
 		{
-			//alert("MODIF");
-			vm.descripcion = $stateParams.parametros.descripcion;
-			vm.uuid = $stateParams.parametros.uuid;
-			vm.clave = $stateParams.parametros.clave;
-			vm.selectTipo = $stateParams.parametros.idModuloTipo.toString();
-			vm.id = $stateParams.parametros.id;
+			
+			var ObjetoTemp = Modulos.seleccionarId($stateParams.id);
+			
+			vm.descripcion = ObjetoTemp.descripcion;
+			vm.uuid = ObjetoTemp.uuid;
+			vm.clave = ObjetoTemp.clave;
+			vm.selectTipo = undefined;
+			vm.id = ObjetoTemp.id;
+			
+			if(ObjetoTemp.idModuloTipo)			
+			vm.selectTipo = ObjetoTemp.idModuloTipo.toString();
+			
 		}
 	});
 	
@@ -281,6 +287,9 @@ angular.module('starter.controllers', [])
 			vm.id = ObjetoTemp.id;
 		}
 	});
+	
+	
+	
 })
 
 
@@ -325,6 +334,15 @@ $ionicPopover.fromTemplateUrl('templates/popover.html', {
   }).then(function(popover) {
     $scope.popover = popover;
   });
+  
+  $rootScope.$on('actualizarLista:Dispositivos',function(){
+	  
+	  Dispositivos.actualizarLista().then(function(res){
+		  
+		  vm.lista=res
+	  });
+	  
+  })
  
  $scope.$on('$ionicView.enter', function(e) {
   
@@ -589,11 +607,11 @@ var vm = this;
 
 vm.openPopoverEspacios = function(event, espacioId){
 	$scope.espacioIdSeleccionado = espacioId;
-	$scope.popover.show(event);
+	$scope.popoverEspacios.show(event);
 }
 
 $scope.editarEspacio = function(){
-	$scope.popover.hide();
+	$scope.popoverEspacios.hide();
 
 //	var listaFiltrada = vm.lista.filter(function(elem){
 //		return (elem.id == $scope.espacioIdSeleccionado);
@@ -603,14 +621,14 @@ $scope.editarEspacio = function(){
 	//var parametrosActuales = {id:listaFiltrada[0].id, descripcion:listaFiltrada[0].descripcion, urlImagen:listaFiltrada[0].urlImagen};	
 	
 	//alert('parametrosActuales id: ' + parametrosActuales.id);
-	alert($scope.espacioIdSeleccionado);
+	
 	$state.go("app.espacioAlta", {id:$scope.espacioIdSeleccionado});
 
 }
 
 $scope.eliminarEspacio= function(){
 	//alert("eliminar");
-	$scope.popover.hide();
+	$scope.popoverEspacios.hide();
 	Espacios.eliminar($scope.espacioIdSeleccionado).then( 
 			function(res){
 							//alert("lista");
@@ -621,7 +639,7 @@ $scope.eliminarEspacio= function(){
 $ionicPopover.fromTemplateUrl('templates/popoverEspacios.html', {
     scope: $scope,
   }).then(function(popover) {
-    $scope.popover = popover;
+    $scope.popoverEspacios = popover;
   });
  
  $scope.$on('$ionicView.enter', function(e) {
