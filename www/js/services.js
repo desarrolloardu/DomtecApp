@@ -59,6 +59,7 @@ angular.module('starter.services', [])
 	var lista;
 	var db = null;
 	
+	
 	db=FactoryDB.punteroDb();
 	
 
@@ -254,7 +255,7 @@ function actualizarLista () {
 .factory("Modulos", ['$cordovaSQLite', '$cordovaToast', '$rootScope', '$q','FactoryDB', function($cordovaSQLite, $cordovaToast, $rootScope, $q, FactoryDB){
 	var lista;
 	var db = null;
-		
+	alert("modulos");	
 	db=FactoryDB.punteroDb();
 	
 	var listaTipoModulos = [
@@ -379,8 +380,8 @@ function actualizarLista () {
 				
 				
 				$cordovaSQLite.nestedExecute(db,query,query2,[id],[id]).then(function(res){
-					
 					actualizarLista().then(function(res){
+					$rootScope.$broadcast('actualizarLista:Dispositivos');
 										
 									var lista=res;	
 									q.resolve(res);	
@@ -513,13 +514,12 @@ function actualizarLista () {
 .factory("Dispositivos", ['$cordovaSQLite', '$cordovaToast', '$rootScope', '$q','FactoryDB', 'Espacios','Modulos', function($cordovaSQLite, $cordovaToast, $rootScope, $q, FactoryDB, Espacios,Modulos){
 	var lista;
 	var db = null;
-	
 	db=FactoryDB.punteroDb();
 
 	
 	
 	function actualizarLista () {
-	//alert("LISTA");
+	
 
 			var q = $q.defer();
 			var respuesta = [];
@@ -555,6 +555,14 @@ function actualizarLista () {
 			return q.promise;
 			
 			};
+			
+			
+	$rootScope.$on('actualizarLista:Dispositivos',function(){
+		
+		actualizarLista();
+		
+		
+	})		
 
 	var interfaz = {
 		

@@ -84,7 +84,7 @@ angular.module('starter.controllers', [])
 		Modulos.eliminar($scope.moduloIdSeleccionado).then( 
 				function(res){
 					
-					$rootScope.$broadcast('actualizarLista:Dispositivos');
+				//	$rootScope.$broadcast('actualizarLista:Dispositivos');
 								//alert("lista");
 								vm.lista = res;
 							
@@ -335,7 +335,7 @@ $ionicPopover.fromTemplateUrl('templates/popover.html', {
     $scope.popover = popover;
   });
   
-  $rootScope.$on('actualizarLista:Dispositivos',function(){
+  /*$rootScope.$on('actualizarLista:Dispositivos',function(){
 	  
 	  Dispositivos.actualizarLista().then(function(res){
 		  
@@ -343,6 +343,8 @@ $ionicPopover.fromTemplateUrl('templates/popover.html', {
 	  });
 	  
   })
+  
+  */
  
  $scope.$on('$ionicView.enter', function(e) {
   
@@ -466,20 +468,7 @@ Dispositivos.lista().then(
 	
 	vm.urlImagen = "./img/ionic.png";
 	
-	Espacios.lista().then(function(res){
-		vm.lista = res;
-		
-	});
-
-	Modulos.lista().then(function(res){
-		vm.listaModulos = res;
-		/*setTimeout(function(){
-
-vm.entradaModulo=1;
-
-		},2000)*/
-	});
-
+	
 	vm.alta = function(){
 		
 			if(!$stateParams.id)
@@ -506,6 +495,19 @@ vm.entradaModulo=1;
 
 
 	$scope.$on('$ionicView.enter', function(e) {
+		
+		
+		Espacios.lista().then(function(res){
+		vm.lista = res;
+		
+	});
+
+	Modulos.lista().then(function(res){
+		vm.listaModulos = res;
+		
+	});
+
+		
 		
 		if(!$stateParams.id)
 		{
