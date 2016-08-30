@@ -88,15 +88,15 @@ angular.module('starter', ['ionic', 'starter.controllers','starter.services', 'n
   })
 	
 	.state('app.dispositivo', {
-    url: '/dispositivos/:dispositivoId',
-    params:{parametros:null},
+    url: '/dispositivos/:id',
+    //params:{parametros:null},
     views: {
-      'menuContent': {
+        'menuContent': {
         templateUrl: 'templates/dispositivo.html',
         controller: 'DispositivoCtrl',
-		controllerAs: 'di' 
-		}
-	  }	
+		    controllerAs: 'di' 
+		    }
+	    }	
     })
 	
 	.state('app.dispositivoAlta', {

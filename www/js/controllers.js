@@ -4,6 +4,20 @@
 
 angular.module('starter.controllers', [])
 
+.directive('range', function () {
+    return {
+        restrict: 'C',
+        link: function (scope, element, attr) {
+            element.bind('touchstart mousedown', function(event) {
+                event.stopPropagation();
+                event.stopImmediatePropagation();
+            });
+        }
+    };
+ })
+
+
+
 .controller('AppCtrl', function($scope, $ionicModal,$state, $timeout,FactoryDB) {
 
   // With the new view caching in Ionic, Controllers are only called
@@ -312,8 +326,8 @@ $scope.eliminarDispositivo= function(){
 }
 
 vm.mostrarDispositivo = function(idDispositivo){
-		var parametrosActuales = {id:idDispositivo}	
-		$state.go("app.dispositivo", {parametros:parametrosActuales});
+		//var parametrosActuales = {id:idDispositivo}	
+		$state.go("app.dispositivo", {id:idDispositivo});
 }
 
 $ionicPopover.fromTemplateUrl('templates/popover.html', {
@@ -343,13 +357,22 @@ Dispositivos.lista().then(
 
 .controller('DispositivoCtrl', function($scope, $stateParams, Dispositivos, $ionicPlatform, $cordovaBluetoothSerial, $cordovaToast) {
 	var vm =this;
-	
-	
+
 	vm.listar = function(){
 		
 		$cordovaBluetoothSerial.list().then(exito, error);
 		
 	}
+
+
+	$scope.$on('$ionicView.enter', function(e) {
+		vm.dispositivo = Dispositivos.seleccionarId($stateParams.id);
+		$cordovaToast.show('Conectando a: ' + vm.dispositivo.uuid, 'long', 'center');
+		$cordovaBluetoothSerial.connect(vm.dispositivo.uuid).then(conectExito, error);
+
+	});
+
+
 	
 	vm.conectar = function(){
 		
@@ -375,6 +398,21 @@ Dispositivos.lista().then(
 		
 	}
 	
+
+	vm.actualizarValorDimmer = function(){
+
+	//	$cordovaToast.show(vm.dimmerValor, 'short', 'center');
+		$cordovaBluetoothSerial.write(vm.dimmerValor+";", enviarExito, error);
+		
+	}
+
+	vm.toggleClick = function(){
+
+		$cordovaToast.show(vm.toggle, 'short', 'center');
+	//	$cordovaBluetoothSerial.write(vm.dimmerValor+";", enviarExito, error);
+		
+	}
+
 	vm.enviar = function(){
 		
 		$cordovaToast.show(vm.intensidad, 'long', 'center');

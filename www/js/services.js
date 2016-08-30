@@ -255,7 +255,7 @@ function actualizarLista () {
 .factory("Modulos", ['$cordovaSQLite', '$cordovaToast', '$rootScope', '$q','FactoryDB', function($cordovaSQLite, $cordovaToast, $rootScope, $q, FactoryDB){
 	var lista;
 	var db = null;
-	alert("modulos");	
+		
 	db=FactoryDB.punteroDb();
 	
 	var listaTipoModulos = [
@@ -352,7 +352,7 @@ function actualizarLista () {
 						function(res) {
 								
 								actualizarLista().then(function(res){
-										
+									$rootScope.$broadcast('actualizarLista:Dispositivos');	
 									var lista=res;	
 									q.resolve(res);	
 										

@@ -4,6 +4,20 @@
 
 angular.module('starter.controllers', [])
 
+.directive('range', function () {
+    return {
+        restrict: 'C',
+        link: function (scope, element, attr) {
+            element.bind('touchstart mousedown', function(event) {
+                event.stopPropagation();
+                event.stopImmediatePropagation();
+            });
+        }
+    };
+ })
+
+
+
 .controller('AppCtrl', function($scope, $ionicModal,$state, $timeout,FactoryDB) {
 
   // With the new view caching in Ionic, Controllers are only called
@@ -73,7 +87,7 @@ angular.module('starter.controllers', [])
 
 	$scope.editarModulo = function(){
 		$scope.popoverModulos.hide();
-		//alert('parametrosActuales id: ' + parametrosActuales.id);
+		
 		$state.go("app.moduloAlta", {id:$scope.moduloIdSeleccionado});
 
 	}
@@ -84,8 +98,6 @@ angular.module('starter.controllers', [])
 		Modulos.eliminar($scope.moduloIdSeleccionado).then( 
 				function(res){
 					
-				//	$rootScope.$broadcast('actualizarLista:Dispositivos');
-								//alert("lista");
 								vm.lista = res;
 							
 								
@@ -187,7 +199,7 @@ angular.module('starter.controllers', [])
 })
 
 
-//$scope,$ionicModal,$ionicPlatform,Dispositivos, Espacios, Modulos,Imagenes, $state, $stateParams,$ionicHistory
+
 .controller('EspacioAltaCtrl', function($scope, Espacios,Imagenes, $stateParams, $state, $ionicPlatform, $ionicHistory,$ionicModal) {
 
 //alert("EspacioAltaCtrl");
@@ -223,15 +235,7 @@ angular.module('starter.controllers', [])
 		
 	}
 	
-	/*
-	if($stateParams.parametros != null)
-	{
-		vm.descripcion = $stateParams.parametros.descripcion;
-		vm.urlImagen = $stateParams.parametros.urlImagen;
-		vm.descImagen= $stateParams.parametros.descImagen;
-		vm.codImagen= $stateParams.parametros.codImagen;
-	}
-	*/
+	
 	
 	vm.seleccionarImagen = function(){
 		
@@ -305,28 +309,25 @@ vm.openPopover = function(event, dispositivoId){
 
 $scope.editarDispositivo = function(){
 	$scope.popover.hide();
-	//var listaFiltrada = vm.lista.filter(function(elem){
-	//	return (elem.id == $scope.dispositivoIdSeleccionado);
-	//}) 
-	//var parametrosActuales = {id:listaFiltrada[0].id, nombre:listaFiltrada[0].nombre, descripcion:listaFiltrada[0].descripcion, idEspacio:listaFiltrada[0].idEspacio, urlImagen:listaFiltrada[0].urlImagen, idModulo:listaFiltrada[0].idModulo,	entradaModulo:listaFiltrada[0].entradaModulo};	
+	
 	$state.go("app.dispositivoAlta", {id:$scope.dispositivoIdSeleccionado});
 	
 	
 }
 
 $scope.eliminarDispositivo= function(){
-	//alert("eliminar");
+	
 	$scope.popover.hide();
 	Dispositivos.eliminar($scope.dispositivoIdSeleccionado).then( 
 			function(res){
-							//alert("lista");
+							
 							vm.lista = res;
 						});
 }
 
 vm.mostrarDispositivo = function(idDispositivo){
-		var parametrosActuales = {id:idDispositivo}	
-		$state.go("app.dispositivo", {parametros:parametrosActuales});
+		//var parametrosActuales = {id:idDispositivo}	
+		$state.go("app.dispositivo", {id:idDispositivo});
 }
 
 $ionicPopover.fromTemplateUrl('templates/popover.html', {
@@ -335,22 +336,13 @@ $ionicPopover.fromTemplateUrl('templates/popover.html', {
     $scope.popover = popover;
   });
   
-  /*$rootScope.$on('actualizarLista:Dispositivos',function(){
-	  
-	  Dispositivos.actualizarLista().then(function(res){
-		  
-		  vm.lista=res
-	  });
-	  
-  })
-  
-  */
+ 
  
  $scope.$on('$ionicView.enter', function(e) {
   
 Dispositivos.lista().then( 
 				function(res){
-								//alert("lista");
+								
 								vm.lista = res;
 							});
 
@@ -365,13 +357,22 @@ Dispositivos.lista().then(
 
 .controller('DispositivoCtrl', function($scope, $stateParams, Dispositivos, $ionicPlatform, $cordovaBluetoothSerial, $cordovaToast) {
 	var vm =this;
-	
-	
+
 	vm.listar = function(){
 		
 		$cordovaBluetoothSerial.list().then(exito, error);
 		
 	}
+
+
+	$scope.$on('$ionicView.enter', function(e) {
+		vm.dispositivo = Dispositivos.seleccionarId($stateParams.id);
+		$cordovaToast.show('Conectando a: ' + vm.dispositivo.uuid, 'long', 'center');
+		$cordovaBluetoothSerial.connect(vm.dispositivo.uuid).then(conectExito, error);
+
+	});
+
+
 	
 	vm.conectar = function(){
 		
@@ -397,6 +398,21 @@ Dispositivos.lista().then(
 		
 	}
 	
+
+	vm.actualizarValorDimmer = function(){
+
+	//	$cordovaToast.show(vm.dimmerValor, 'short', 'center');
+		$cordovaBluetoothSerial.write(vm.dimmerValor+";", enviarExito, error);
+		
+	}
+
+	vm.toggleClick = function(){
+
+		$cordovaToast.show(vm.toggle, 'short', 'center');
+	//	$cordovaBluetoothSerial.write(vm.dimmerValor+";", enviarExito, error);
+		
+	}
+
 	vm.enviar = function(){
 		
 		$cordovaToast.show(vm.intensidad, 'long', 'center');
