@@ -11,10 +11,23 @@
 
 	
   <ion-content>
-    <h1>Acerca de</h1>
-	
+    <md-tabs>
+  <md-tab label="Espacios"><espacios-directive></espacios-directive></md-tab>
+  <md-tab label="Dispositivos"><dispositivos-directive></dispositivos-directive></md-tab>
+  
+</md-tabs>
+    
 	
 	
   </ion-content>
+  
+  
+  <md-button class="md-fab float-button" aria-label="Alta Dispositivo" ui-sref="app.dispositivoAlta">		
+		<div class="content">
+            <i style="font-size:20px" class="fa fa-plus"></i>
+			</div>
+    </md-button>
+
+  
 </ion-view>
  

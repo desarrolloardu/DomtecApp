@@ -724,10 +724,22 @@ function actualizarLista () {
 .factory("FactoryDB", ['$cordovaSQLite', '$cordovaToast', '$rootScope', '$q','$state', function($cordovaSQLite, $cordovaToast, $rootScope, $q,$state){
 	
 		var db = null;
+		var estadoInicioDomtec=0;
 			
 			
 					
 		var interfaz = {
+			
+			inicioDomtecTab: function(param) {
+				
+			if (param)
+			estadoInicioDomtec=param;
+			
+			
+			return estadoInicioDomtec;
+				
+				
+			},
 			
 			
 			punteroDb: function() {

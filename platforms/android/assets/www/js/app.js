@@ -7,7 +7,7 @@
 
 
 
-angular.module('starter', ['ionic', 'starter.controllers','starter.services', 'ngMaterial', 'ngCordova', 'ngMask' ])
+angular.module('starter', ['ionic', 'starter.controllers','starter.directives','starter.services', 'ngMaterial', 'ngCordova', 'ngMask' ])
 
 .run(function($rootScope,$state,$ionicPlatform, $cordovaSQLite, $ionicHistory,FactoryDB) {
   $ionicPlatform.ready(function() {
@@ -35,9 +35,9 @@ angular.module('starter', ['ionic', 'starter.controllers','starter.services', 'n
     else if ($ionicHistory.backView()) {
       $ionicHistory.goBack();
     }
-    else if (vistaActual=='app.modulos'){
+    else if (vistaActual=='modulos'){
       
-      $state.go('app.inicio.espacios');
+      $state.go('app.inicioDomtec');
       
     
       
@@ -57,7 +57,7 @@ angular.module('starter', ['ionic', 'starter.controllers','starter.services', 'n
 	
 	FactoryDB.inicializarDB().then(function(){
 	  
-	   $state.go('app.inicio.espacios');	
+	   $state.go('app.inicioDomtec');	
 	  
   });
 	
@@ -86,6 +86,21 @@ angular.module('starter', ['ionic', 'starter.controllers','starter.services', 'n
       }
     }
   })
+  
+  .state('app.inicioDomtec', {
+    url: '/inicioDomtec',
+    params:{idTab:null},
+	//cache: false,
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/inicio-domtec.html',
+		controller: 'InicioDomtecCtrl',
+		controllerAs: 'id' 
+      }
+    }
+  })
+  
+  
 	
 	.state('app.dispositivo', {
     url: '/dispositivos/:id',
@@ -114,20 +129,18 @@ angular.module('starter', ['ionic', 'starter.controllers','starter.services', 'n
 
    
 	
-	.state('app.modulos', {
+	.state('modulos', {
       url: '/modulos',
-      module:'modulos',
-      views: {
-          'menuContent': {     
+      //module:'modulos',
+        
             templateUrl: 'templates/modulos.html',
             controller: 'ModulosCtrl',
             controllerAs: 'mo' 
-          }
-        }
+        
     })
 	
 	.state('app.modulo', {
-      url: '/modulos/:moduloId',
+      url: '/modulo/:moduloId',
       views: {
         'menuContent': {
           templateUrl: 'templates/modulo.html',
@@ -183,7 +196,7 @@ angular.module('starter', ['ionic', 'starter.controllers','starter.services', 'n
       }
     })
   
-  
+  /*
   .state('app.inicio', {
     url: '/inicio',
 	abstract: true,
@@ -218,7 +231,8 @@ angular.module('starter', ['ionic', 'starter.controllers','starter.services', 'n
 		controllerAs: 'es' 
 		}
 	}
-  })
+  
+  }) */
   
   
   // if none of the above states are matched, use this as the fallback

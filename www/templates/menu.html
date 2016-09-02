@@ -1,9 +1,7 @@
-<ion-side-menus enable-menu-with-back-views="false">
+<ion-side-menus enable-menu-with-back-views="true">
   <ion-side-menu-content>
     <ion-nav-bar class="has-tabs-top bar-positive ">
-      <ion-nav-back-button>
-      </ion-nav-back-button>
-
+      
       <ion-nav-buttons side="left">
         <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
         </button>
@@ -12,7 +10,9 @@
 	  
 	  
     </ion-nav-bar>
-	
+    
+    
+    
 	
 	
 	
@@ -32,13 +32,13 @@
         <ion-item menu-close href="#/app/acercade">
           Acerca de
         </ion-item>
-		<ion-item menu-close href="#/app/modulos">
+		<ion-item menu-close href="#/modulos">
           Modulos
         </ion-item>
-        <ion-item menu-close href="#/app/inicio/dispositivos">
+        <ion-item menu-close ng-click="goDispositivos()">
           Dispositivos
         </ion-item>
-        <ion-item menu-close href="#/app/inicio/espacios">
+        <ion-item menu-close ng-click="goEspacios()">
           Espacios
         </ion-item>
       </ion-list>

@@ -4,17 +4,7 @@
 
 angular.module('starter.controllers', [])
 
-.directive('range', function () {
-    return {
-        restrict: 'C',
-        link: function (scope, element, attr) {
-            element.bind('touchstart mousedown', function(event) {
-                event.stopPropagation();
-                event.stopImmediatePropagation();
-            });
-        }
-    };
- })
+
 
 
 
@@ -29,6 +19,21 @@ angular.module('starter.controllers', [])
 
   // Form data for the login modal
   $scope.loginData = {};
+  
+  
+  $scope.goDispositivos = function() {
+	  FactoryDB.inicioDomtecTab('1');
+	  $state.reload();
+	  
+  }
+  
+  
+  $scope.goEspacios = function() {
+	  FactoryDB.inicioDomtecTab('0');
+	  $state.reload();
+	  
+  }
+
 
   // Create the login modal that we will use later
   $ionicModal.fromTemplateUrl('templates/login.html', {
@@ -69,7 +74,8 @@ angular.module('starter.controllers', [])
 	
 	
 	vm.back= function  () {
-		$state.go('app.inicio.espacios')
+		
+		$state.go('app.inicioDomtec')
 		}
 
 	
@@ -103,9 +109,7 @@ angular.module('starter.controllers', [])
 								
 							},function(err){
 								
-								
-								
-							});
+								});
 	}
 
  
@@ -141,7 +145,7 @@ angular.module('starter.controllers', [])
 			Modulos.insertar(vm.uuid,vm.clave,vm.descripcion,vm.selectTipo).then(function(res){
 		//	Espacios.insertar(vm.descripcion,vm.urlImagen).then(function(res){
 		
-			$state.go('app.modulos');
+			$ionicHistory.goBack();
 			
 			},function(err){});
 		}
@@ -150,7 +154,7 @@ angular.module('starter.controllers', [])
 			//alert("actualizar");
 			Modulos.actualizar(vm.id, vm.uuid, vm.clave, vm.descripcion, vm.selectTipo).then(function(res){
 			
-			$state.go('app.modulos');
+			$ionicHistory.goBack();
 			
 			},function(err){});
 		}
@@ -253,7 +257,7 @@ angular.module('starter.controllers', [])
 			//alert("insertar");
 			Espacios.insertar(vm.descripcion,vm.urlImagen).then(function(res){
 		
-			$state.go('app.inicio.espacios');
+			$ionicHistory.goBack();
 			
 			},function(err){});
 		}
@@ -262,7 +266,7 @@ angular.module('starter.controllers', [])
 			//alert("actualizar");
 			Espacios.actualizar(vm.id, vm.descripcion, vm.urlImagen).then(function(res){
 			
-			$state.go('app.inicio.espacios');
+			$ionicHistory.goBack();
 			
 			},function(err){});
 		}
@@ -302,6 +306,8 @@ angular.module('starter.controllers', [])
 var vm = this;
 //var onholdPresionado = false;
 
+
+
 vm.openPopover = function(event, dispositivoId){
 	$scope.dispositivoIdSeleccionado = dispositivoId;
 	$scope.popover.show(event);
@@ -336,7 +342,23 @@ $ionicPopover.fromTemplateUrl('templates/popover.html', {
     $scope.popover = popover;
   });
   
- 
+  
+  
+  
+  $rootScope.$on('controlador:dispositivos', function(e) {
+  vm.lista=[];
+Dispositivos.lista().then( 
+				function(res){
+					
+								
+								vm.lista = res;
+							});
+
+
+});
+  
+
+ /*
  
  $scope.$on('$ionicView.enter', function(e) {
   
@@ -348,6 +370,8 @@ Dispositivos.lista().then(
 
 
 });
+
+*/
 	
 	
 		
@@ -491,7 +515,7 @@ Dispositivos.lista().then(
 			{
 				Dispositivos.insertar(vm.nombre, vm.descripcion, vm.idEspacio, vm.urlImagen, vm.idModulo,vm.entradaModulo).then(function(res){
 				
-				$state.go('app.inicio.dispositivos');
+				$ionicHistory.goBack();
 				
 				},function(err){});
 			}
@@ -499,7 +523,7 @@ Dispositivos.lista().then(
 			{
 				Dispositivos.actualizar(vm.id, vm.nombre, vm.descripcion, vm.idEspacio, vm.urlImagen, vm.idModulo,vm.entradaModulo).then(function(res){
 				
-				$state.go('app.inicio.dispositivos');
+				$ionicHistory.goBack();
 				
 				},function(err){});
 			}
@@ -612,6 +636,78 @@ Dispositivos.lista().then(
 		}
 })
 
+
+.controller('InicioDomtecCtrl', function($scope,$rootScope,$state,$stateParams, $ionicPlatform, $cordovaToast, FactoryDB) {
+	
+	var vm = this;
+	
+	
+	vm.select = function(tab) {
+		
+		vm.tabSelected = tab;
+		
+		if(tab=='espacios'){
+		$rootScope.$broadcast('controlador:espacios');
+		FactoryDB.inicioDomtecTab('0');
+		}
+		
+			
+		if(tab=='dispositivos'){
+		$rootScope.$broadcast('controlador:dispositivos');	
+		FactoryDB.inicioDomtecTab('1');
+		}
+		
+		
+	}
+	
+
+	
+	vm.alta = function () {
+		if(vm.tabSelected=='espacios')
+		$state.go('app.espacioAlta');
+			
+			
+		if(vm.tabSelected=='dispositivos')
+			$state.go('app.dispositivoAlta');	
+		
+		
+	}
+	
+	
+	vm.actualizarEspacios = function() {
+		
+		$rootScope.$broadcast('controlador:espacios');
+		
+	}
+	
+	vm.actualizarDispositivos = function() {
+		
+		$rootScope.$broadcast('controlador:dispositivos');
+		
+	}
+	
+	
+	
+	
+	 $scope.$on('$ionicView.enter', function(e) {
+	
+	
+	$rootScope.$broadcast('controlador:espacios');
+	$rootScope.$broadcast('controlador:dispositivos');
+	vm.idTabParams=FactoryDB.inicioDomtecTab()
+	
+	
+	
+	
+});
+	
+	
+	
+	
+	
+	
+})
+
 .controller('InicioCtrl', function($scope, $ionicPlatform, $cordovaToast, FactoryDB) {
 	
 	var vm = this;
@@ -659,6 +755,20 @@ $ionicPopover.fromTemplateUrl('templates/popoverEspacios.html', {
   }).then(function(popover) {
     $scope.popoverEspacios = popover;
   });
+  
+  
+  $rootScope.$on('controlador:espacios', function(e) {
+  
+Espacios.lista().then( 
+				function(res){
+								//alert("lista");
+								vm.lista = res;
+							});
+
+
+});
+  
+  
  
  $scope.$on('$ionicView.enter', function(e) {
 	Espacios.lista().then( 
