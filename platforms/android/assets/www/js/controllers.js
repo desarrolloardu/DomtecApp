@@ -391,37 +391,17 @@ Dispositivos.lista().then(
 
 	$scope.$on('$ionicView.enter', function(e) {
 		vm.dispositivo = Dispositivos.seleccionarId($stateParams.id);
-		$cordovaToast.show('Conectando a: ' + vm.dispositivo.uuid, 'long', 'center');
+		$cordovaToast.show('Conectando a: ' + vm.dispositivo.uuid, 'short', 'center');
 		$cordovaBluetoothSerial.connect(vm.dispositivo.uuid).then(conectExito, error);
 
 	});
 
+	$scope.$on('$ionicView.leave', function(){
 
-	
-	vm.conectar = function(){
-		
-		$cordovaBluetoothSerial.connect("98:D3:31:70:30:80").then(conectExito, error);
-		
-	}
-
-	vm.conectar2 = function(){
-		
-		$cordovaBluetoothSerial.connect("98:D3:31:90:2C:00").then(conectExito, error);
-		
-	}
-	
-	vm.conectar3 = function(){
-		
-		$cordovaBluetoothSerial.connect("98:D3:31:60:0E:AA").then(conectExito, error);
-		
-	}
-	
-	vm.conectar4 = function(){
-		
-		$cordovaBluetoothSerial.connect("98:D3:31:80:3B:1A").then(conectExito, error);
-		
-	}
-	
+		$cordovaBluetoothSerial.isConnected().then(desconectar(), failure);
+	//alert("rajando!");
+  // do all kind of stuff
+});
 
 	vm.actualizarValorDimmer = function(){
 
@@ -444,6 +424,10 @@ Dispositivos.lista().then(
 		
 	}
 	
+	function desconectar()
+	{
+		$cordovaBluetoothSerial.disconnect().then(desconectarExito, error);
+	}
 	function exito (response)
 	{
 		vm.lista=response;
@@ -455,6 +439,12 @@ Dispositivos.lista().then(
 	{
 		$cordovaToast.show('Conecto!', 'long', 'center');
 	};
+
+	function desconectarExito (response)
+	{
+		alert("Desconecto!");
+		$cordovaToast.show('Desconecto!', 'long', 'center');
+	}
 	
 	function enviarExito (response)
 	{
