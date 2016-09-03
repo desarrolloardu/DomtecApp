@@ -261,6 +261,7 @@ function actualizarLista () {
 	var listaTipoModulos = [
 	{desc:'Dimmer',cod:'DIMM', urlImagen:'img/ionic.png'},
 	{desc:"Zapatilla",cod:'ZAP', urlImagen:'img/ionic.png'},
+	{desc:"IR",cod:'IR', urlImagen:'img/ionic.png'},
 	{desc:"Rele",cod:'REL', urlImagen:'img/ionic.png'}];
 	
 	

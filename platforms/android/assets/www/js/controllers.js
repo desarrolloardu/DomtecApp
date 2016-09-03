@@ -337,37 +337,17 @@ var vm = this;
 
 	$scope.$on('$ionicView.enter', function(e) {
 		vm.dispositivo = Dispositivos.seleccionarId($stateParams.id);
-		$cordovaToast.show('Conectando a: ' + vm.dispositivo.uuid, 'long', 'center');
+		$cordovaToast.show('Conectando a: ' + vm.dispositivo.uuid, 'short', 'center');
 		$cordovaBluetoothSerial.connect(vm.dispositivo.uuid).then(conectExito, error);
 
 	});
 
+	$scope.$on('$ionicView.leave', function(){
 
-	
-	vm.conectar = function(){
-		
-		$cordovaBluetoothSerial.connect("98:D3:31:70:30:80").then(conectExito, error);
-		
-	}
-
-	vm.conectar2 = function(){
-		
-		$cordovaBluetoothSerial.connect("98:D3:31:90:2C:00").then(conectExito, error);
-		
-	}
-	
-	vm.conectar3 = function(){
-		
-		$cordovaBluetoothSerial.connect("98:D3:31:60:0E:AA").then(conectExito, error);
-		
-	}
-	
-	vm.conectar4 = function(){
-		
-		$cordovaBluetoothSerial.connect("98:D3:31:80:3B:1A").then(conectExito, error);
-		
-	}
-	
+		$cordovaBluetoothSerial.isConnected().then(desconectar(), failure);
+	//alert("rajando!");
+  // do all kind of stuff
+});
 
 	vm.actualizarValorDimmer = function(){
 
@@ -385,37 +365,71 @@ var vm = this;
 
 	vm.enviar = function(){
 		
-		$cordovaToast.show(vm.intensidad, 'long', 'center');
+		$cordovaToast.show(vm.intensidad, 'short', 'center');
 		$cordovaBluetoothSerial.write(vm.intensidad+";", enviarExito, error);
 		
 	}
+
+	vm.conectar = function(){
+		
+		$cordovaBluetoothSerial.connect("98:D3:31:90:33:18").then(conectExito, error);
+		
+	}
+
+	vm.conectar2 = function(){
+		
+		$cordovaBluetoothSerial.connect("98:D3:31:90:2C:00").then(conectExito, error);
+		
+	}
 	
+	vm.conectar3 = function(){
+		$cordovaBluetoothSerial.disconnect().then(desconectarExito, error);
+		//$cordovaBluetoothSerial.connect("98:D3:31:60:0E:AA").then(conectExito, error);
+		
+	}
+	
+	vm.conectar4 = function(){
+		
+		$cordovaBluetoothSerial.connect("98:D3:31:80:3B:1A").then(conectExito, error);
+		
+	}
+	
+	function desconectar()
+	{
+		$cordovaBluetoothSerial.disconnect().then(desconectarExito, error);
+	}
 	function exito (response)
 	{
 		vm.lista=response;
 		
-		$cordovaToast.show(vm.lista[2].name, 'long', 'center');
+		$cordovaToast.show(vm.lista[2].name, 'short', 'center');
 	};
 	
 	function conectExito (response)
 	{
-		$cordovaToast.show('Conecto!', 'long', 'center');
+		$cordovaToast.show('Conecto!', 'short', 'center');
 	};
+
+	function desconectarExito (response)
+	{
+		//alert("Desconecto!");
+		$cordovaToast.show('Desconecto!', 'short', 'center');
+	}
 	
 	function enviarExito (response)
 	{
-		$cordovaToast.show('Envio!', 'long', 'center');
+		$cordovaToast.show('Envio!', 'short', 'center');
 	};
 	
 	function enableExito (response)
 	{
-		$cordovaToast.show("Bluetooth is enabled", 'long', 'center');
+		$cordovaToast.show("Bluetooth is enabled", 'short', 'center');
 	};
 	
 	
 	function error (response)
 	{
-		$cordovaToast.show(response, 'long', 'center');
+		$cordovaToast.show(response, 'short', 'center');
 	};
 
 })
