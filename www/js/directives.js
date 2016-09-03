@@ -65,7 +65,7 @@ vm.openPopover = function(event, dispositivoId){
 $scope.editarDispositivo = function(){
 	$scope.popover.hide();
 	
-	$state.go("app.dispositivoAlta", {id:$scope.dispositivoIdSeleccionado});
+	$state.go("dispositivoAlta", {id:$scope.dispositivoIdSeleccionado});
 	
 	
 }
@@ -157,7 +157,7 @@ $scope.editarEspacio = function(){
 	
 	//alert('parametrosActuales id: ' + parametrosActuales.id);
 	
-	$state.go("app.espacioAlta", {id:$scope.espacioIdSeleccionado});
+	$state.go("espacioAlta", {id:$scope.espacioIdSeleccionado});
 
 }
 

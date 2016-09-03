@@ -94,7 +94,7 @@ angular.module('starter.controllers', [])
 	$scope.editarModulo = function(){
 		$scope.popoverModulos.hide();
 		
-		$state.go("app.moduloAlta", {id:$scope.moduloIdSeleccionado});
+		$state.go("moduloAlta", {id:$scope.moduloIdSeleccionado});
 
 	}
 
