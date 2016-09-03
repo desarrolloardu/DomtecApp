@@ -1,7 +1,5 @@
-<ion-view view-title="Ambiente">
+<ion-view view-title="Dispositivo">
   <ion-content>
-    <h1>Dispositivo</h1>
-
 
 	<!--
 	<input type="text" ng-model="di.textDispositivo">
@@ -16,8 +14,8 @@
 		  <h2>{{bt.address}}</h2>
 		</a>
 	</div>
-
-	
+-->
+	<!--
 	<md-button ng-click="di.conectar()" class="md-raised">Conectar</md-button>
 	<md-button ng-click="di.conectar2()" class="md-raised">Conectar2</md-button>
 	<md-button ng-click="di.conectar3()" class="md-raised">Conectar3</md-button>
@@ -48,6 +46,16 @@
 			<div class="handle"></div>
 		</div>
 	</label>
+</div>
+
+<div ng-if="di.dispositivo.idModuloTipo == 'IR'">
+
+<button class="button icon ion-volume-low" ng-click=""></button>
+<button class="button icon ion-volume-high" ng-click=""></button>
+<button class="button icon ion-arrow-up-a" ng-click=""></button>
+<button class="button icon ion-arrow-down-a" ng-click=""></button>
+<button class="button icon ion-volume-mute" ng-click=""></button>
+ 
 </div>
 
   </ion-content>

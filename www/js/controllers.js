@@ -423,6 +423,30 @@ Dispositivos.lista().then(
 		$cordovaBluetoothSerial.write(vm.intensidad+";", enviarExito, error);
 		
 	}
+
+	vm.conectar = function(){
+		
+		$cordovaBluetoothSerial.connect("98:D3:31:90:33:18").then(conectExito, error);
+		
+	}
+
+	vm.conectar2 = function(){
+		
+		$cordovaBluetoothSerial.connect("98:D3:31:90:2C:00").then(conectExito, error);
+		
+	}
+	
+	vm.conectar3 = function(){
+		$cordovaBluetoothSerial.disconnect().then(desconectarExito, error);
+		//$cordovaBluetoothSerial.connect("98:D3:31:60:0E:AA").then(conectExito, error);
+		
+	}
+	
+	vm.conectar4 = function(){
+		
+		$cordovaBluetoothSerial.connect("98:D3:31:80:3B:1A").then(conectExito, error);
+		
+	}
 	
 	function desconectar()
 	{
