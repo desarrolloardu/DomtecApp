@@ -37,7 +37,7 @@ angular.module('starter', ['ionic', 'starter.controllers','starter.directives','
     }
     else if (vistaActual=='modulos'){
       
-      $state.go('app.inicioDomtec');
+      $state.go('app.inicio.espacios');
       
     
       
@@ -57,7 +57,7 @@ angular.module('starter', ['ionic', 'starter.controllers','starter.directives','
 	
 	FactoryDB.inicializarDB().then(function(){
 	  
-	   $state.go('app.inicioDomtec');	
+	   $state.go('app.inicio.espacios');	
 	  
   });
 	
@@ -114,17 +114,15 @@ angular.module('starter', ['ionic', 'starter.controllers','starter.directives','
 	    }	
     })
 	
-	.state('app.dispositivoAlta', {
+	.state('dispositivoAlta', {
       url: '/dispositivoAlta/:id',
-      views: {
-        'menuContent': {
+      
           
           templateUrl: 'templates/dispositivoAlta.html',
           controller: 'DispositivoAltaCtrl',
 		  controllerAs: 'di',
        
-        }
-      }
+       
     })
 
    
@@ -149,15 +147,13 @@ angular.module('starter', ['ionic', 'starter.controllers','starter.directives','
       }
     })
 	
-	.state('app.moduloAlta', {
+	.state('moduloAlta', {
       url: '/moduloAlta/:id',
-      views: {
-        'menuContent': {
+     
           templateUrl: 'templates/moduloAlta.html',
           controller: 'ModuloAltaCtrl',
 		  controllerAs: 'ma' 
-        }
-      }
+       
     })
 	
 	.state('app.imagenes', {
@@ -185,18 +181,16 @@ angular.module('starter', ['ionic', 'starter.controllers','starter.directives','
     }
   })
   
-  .state('app.espacioAlta', {
+  .state('espacioAlta', {
       url: '/espacioAlta/:id',
-      views: {
-        'menuContent': {
+   
           templateUrl: 'templates/espacioAlta.html',
           controller: 'EspacioAltaCtrl',
 		  controllerAs: 'ea' 
-        }
-      }
+       
     })
   
-  /*
+  
   .state('app.inicio', {
     url: '/inicio',
 	abstract: true,
@@ -232,7 +226,7 @@ angular.module('starter', ['ionic', 'starter.controllers','starter.directives','
 		}
 	}
   
-  }) */
+  }) 
   
   
   // if none of the above states are matched, use this as the fallback

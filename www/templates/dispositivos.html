@@ -2,39 +2,16 @@
   <ion-content>
 	
 	
-	<div class="list">
-		<a ng-repeat="dispositivo in di.lista" class="item item-thumbnail-left" on-hold="di.openPopover($event, dispositivo.id)" on-tap="di.mostrarDispositivo(dispositivo.id)">
-		  <img ng-src="{{dispositivo.urlImagen}}">
-		  <h2>{{dispositivo.nombre}}</h2>
-		  <h2>{{dispositivo.descripcion}}</h2>
-		  <h2>{{dispositivo.idEspacio}}</h2>
-      <h2>{{dispositivo.idModuloTipo}}</h2>
-
-			<h2>Modulo: {{dispositivo.idModulo}}Entrada: {{dispositivo.entradaModulo}}</h2>
-		</a>
-	</div>
+	<dispositivos-directive></dispositivos-directive>
 
   </ion-content>
   
-  <md-button class="md-fab float-button" aria-label="Alta Dispositivo" ui-sref="app.dispositivoAlta">		
+  <md-button class="md-fab float-button" aria-label="Alta Dispositivo" ui-sref="dispositivoAlta">		
 		<div class="content">
             <i style="font-size:20px" class="fa fa-plus"></i>
 			</div>
     </md-button>
 
-		<script id="templates/popover.html" type="text/ng-template">
- <ion-popover-view>
-        <ion-content>
-          <div class="list">
-            <a class="item" ng-click="editarDispositivo();">
-              Editar
-            </a>
-            <a class="item" ng-click="eliminarDispositivo();">
-              Eliminar
-            </a>
-          </div>
-        </ion-content>
-      </ion-popover-view>
-</script>
+		
 </ion-view>
 
