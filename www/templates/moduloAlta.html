@@ -27,6 +27,16 @@
     <input ng-model="ma.clave" type="text" placeholder="Clave">
   </label>
   
+  <a class="item item-icon-left" ng-click="ma.abrirModalModulo()">
+    <i class="icon ion-outlet"></i>
+    {{ma.displayNombre}}
+    <span class="item-note">
+      {{ma.displayUuid}}
+    </span>
+  </a>
+  
+  
+  
    <label class="item item-input item-select">
     <div class="input-label">
       Tipo Modulo
