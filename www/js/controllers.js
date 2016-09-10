@@ -125,9 +125,25 @@ angular.module('starter.controllers', [])
 })
 
 
-.controller('ModuloAltaCtrl', function($scope, $stateParams, $state, $ionicPlatform, $ionicHistory, Modulos) {
+.controller('ModuloAltaCtrl', function($scope, $stateParams,$ionicLoading,$cordovaBluetoothSerial,$ionicModal, $state, $ionicPlatform, $ionicHistory, Modulos) {
 //alert("ModuloAltaCtrl");
 	var vm = this;
+	
+	$ionicModal.fromTemplateUrl('templates/my_modal_modelo_modulos.html', {
+    scope: $scope,
+    animation: 'slide-in-up'
+  }).then(function(modal) {
+    $scope.modalModulos = modal;
+  });
+	
+	$scope.seleccionarModulo= function (item) {
+		
+		$scope.modalModulos.hide();
+		vm.uuid=vm.displayUuid=item.address
+		vm.nombre=vm.displayNombre=item.name
+		
+	}
+	
 	
 	vm.tipoModulos= Modulos.tipoModulos();
 	
@@ -136,13 +152,48 @@ angular.module('starter.controllers', [])
 		$ionicHistory.goBack();
 		};
 	
+	vm.abrirModalModulo = function () {
+		
+		$scope.modalModulos.show();
+		
+		 $ionicLoading.show({
+      template: 'Loading...'
+    }).then(function(){
+       
+    
+	$cordovaBluetoothSerial.enable().then(function(res){
+			
+			$cordovaBluetoothSerial.discoverUnpaired().then(function(lista){
+				
+				$scope.listaModulos=lista;
+				$ionicLoading.hide();
+				
+			},function(err){})
+			
+			
+			
+		},function(err){})
+		
+	
+
+
+
+});
+		
+		
+	}
+	
+	 $scope.$on('modal.hidden', function() {
+	 
+  });
+
 	
 	vm.alta = function(){
 		
 		if(!$stateParams.id)
 		{
 			//alert("insertar");
-			Modulos.insertar(vm.uuid,vm.clave,vm.descripcion,vm.selectTipo).then(function(res){
+			Modulos.insertar(vm.uuid,vm.nombre,vm.clave,vm.descripcion,vm.selectTipo).then(function(res){
 		//	Espacios.insertar(vm.descripcion,vm.urlImagen).then(function(res){
 		
 			$ionicHistory.goBack();
@@ -152,7 +203,7 @@ angular.module('starter.controllers', [])
 		else
 		{
 			//alert("actualizar");
-			Modulos.actualizar(vm.id, vm.uuid, vm.clave, vm.descripcion, vm.selectTipo).then(function(res){
+			Modulos.actualizar(vm.id, vm.uuid,vm.nombre, vm.clave, vm.descripcion, vm.selectTipo).then(function(res){
 			
 			$ionicHistory.goBack();
 			
@@ -169,6 +220,11 @@ angular.module('starter.controllers', [])
 			vm.uuid = undefined;
 			vm.clave = undefined;
 			vm.selectTipo = undefined;
+			vm.nombre=undefined;
+			
+			vm.displayNombre='Seleccione';
+			vm.displayUuid='Modulo'
+			
 		}
 		else
 		{
@@ -180,6 +236,20 @@ angular.module('starter.controllers', [])
 			vm.clave = ObjetoTemp.clave;
 			vm.selectTipo = undefined;
 			vm.id = ObjetoTemp.id;
+			vm.nombre=ObjetoTemp.nombre;
+			vm.uuid=ObjetoTemp.uuid;
+			
+			if(ObjetoTemp.nombre){ 
+				vm.displayNombre=ObjetoTemp.nombre
+			}else{
+				vm.displayNombre='Seleccione';
+			};
+			
+			if(ObjetoTemp.uuid){ 
+				vm.displayUuid=ObjetoTemp.uuid
+			}else{
+				vm.displayNombre='Modulo';
+			}
 			
 			if(ObjetoTemp.idModuloTipo)			
 			vm.selectTipo = ObjetoTemp.idModuloTipo.toString();
@@ -310,8 +380,9 @@ var vm = this;
  
  $scope.$on('$ionicView.enter', function(e) {
 	 
+	
 	 
-  $rootScope.$broadcast('controlador:dispositivosDirective');
+  $scope.$broadcast('controlador:dispositivosDirective');
 
 
 
@@ -687,6 +758,30 @@ var vm = this;
 	
 	var vm = this;
 	
+	
+	
+	
+})
+
+
+.controller('DispositivosEspacioCtrl', function($scope,$stateParams, $ionicPlatform,$ionicHistory, $cordovaToast, FactoryDB) {
+	
+	var vm = this;
+	
+vm.back = function() {
+	$ionicHistory.goBack()
+	
+}
+	
+	$scope.idEspacio=$stateParams.idEspacio
+	
+ $scope.$on('$ionicView.enter', function(e) {
+	
+	 
+	$scope.$broadcast('controlador:dispositivosDirective');
+	
+	
+})
 	
 	
 	

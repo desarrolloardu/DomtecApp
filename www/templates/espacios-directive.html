@@ -1,5 +1,5 @@
 <div class="list">
-		<a ng-repeat="espacio in es.lista" class="item item-thumbnail-left" on-hold="es.openPopoverEspacios($event, espacio.id)">
+		<a ng-repeat="espacio in es.lista" class="item item-thumbnail-left" on-tap="es.seleccionarEspacio(espacio.id)" on-hold="es.openPopoverEspacios($event, espacio.id)">
 		  <img ng-src="{{espacio.urlImagen}}">
 		  <h2>{{espacio.descripcion}}</h2>
 		  <h2>{{espacio.urlImagen}}</h2>

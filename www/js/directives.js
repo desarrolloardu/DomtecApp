@@ -16,10 +16,7 @@ angular.module('starter.directives', [])
  .directive('dispositivosDirective',[ function () {
     return {
         restrict: 'E',
-         scope:{
-          idEspacio:'=?'  
-            
-        },
+         
         templateUrl:'./templates/dispositivos-directive.html',
         link: function (scope, element, attr) {
             
@@ -50,7 +47,7 @@ angular.module('starter.directives', [])
 
 
 
-.controller('DispositivosDirectiveCtrl', function($rootScope,$state, $scope, Dispositivos, $ionicPopover) {
+.controller('DispositivosDirectiveCtrl', function($rootScope,$state,$stateParams, $scope, Dispositivos, $ionicPopover) {
 	
 var vm = this;
 //var onholdPresionado = false;
@@ -91,41 +88,44 @@ $ionicPopover.fromTemplateUrl('templates/popover.html', {
     $scope.popover = popover;
   });
   
-  Dispositivos.lista().then( 
-				function(res){
-					
-								
-								vm.lista = res;
-							});
   
+  vm.initialize = function() {
   
-  $rootScope.$on('controlador:dispositivosDirective', function(e) {
-  
-Dispositivos.lista().then( 
+  if($stateParams.idEspacio){
+      
+      Dispositivos.filtrarPorEspacio($stateParams.idEspacio).then(function(res){
+          
+          vm.lista=res;
+          
+      })
+      
+  } else {
+      
+      Dispositivos.lista().then( 
 				function(res){
 					
 								
 								vm.lista = res;
 							});
 
+      }
+  }
+  
+  
+  vm.initialize();
+                      
+
+  
+  $scope.$on('controlador:dispositivosDirective', function(e) {
+  
+        vm.initialize();
 
 });
   
 
  
  
- $scope.$on('$ionicView.enter', function(e) {
-	 
-	 
-  
-Dispositivos.lista().then( 
-				function(res){
-								
-								vm.lista = res;
-							});
-
-
-});
+ 
 
 
 	
@@ -143,6 +143,12 @@ var vm = this;
 vm.openPopoverEspacios = function(event, espacioId){
 	$scope.espacioIdSeleccionado = espacioId;
 	$scope.popoverEspacios.show(event);
+}
+
+vm.seleccionarEspacio = function (idEsp) {
+    
+    $state.go('dispositivosEspacio',{idEspacio:idEsp})
+    
 }
 
 $scope.editarEspacio = function(){

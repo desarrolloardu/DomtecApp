@@ -319,10 +319,10 @@ function actualizarLista () {
 	var interfaz = {
 			actualizarLista:actualizarLista,
 		
-			insertar: function(uuid, clave, descripcion, idModuloTipo){
+			insertar: function(uuid,nombre, clave, descripcion, idModuloTipo){
 				var q = $q.defer();
-				var query = "INSERT INTO modulos (uuid, clave, descripcion, idModuloTipo) VALUES (?,?,?,?)";
-				$cordovaSQLite.execute(db, query, [uuid, clave, descripcion, idModuloTipo])
+				var query = "INSERT INTO modulos (uuid,nombre, clave, descripcion, idModuloTipo) VALUES (?,?,?,?,?)";
+				$cordovaSQLite.execute(db, query, [uuid,nombre, clave, descripcion, idModuloTipo])
 				.then(
 						function(res) {
 								actualizarLista().then(function(res){
@@ -344,11 +344,11 @@ function actualizarLista () {
 				return q.promise;
 			},
 			
-			actualizar: function(id, uuid, clave, descripcion, idModuloTipo){
+			actualizar: function(id, uuid,nombre, clave, descripcion, idModuloTipo){
 				//alert(id);
 				var q = $q.defer();
-				var query = "UPDATE modulos SET uuid = ?, clave = ?, descripcion = ?, idModuloTipo = ? WHERE id = ?";
-				$cordovaSQLite.execute(db, query, [uuid, clave, descripcion, idModuloTipo, id])
+				var query = "UPDATE modulos SET uuid = ?,nombre= ? clave = ?, descripcion = ?, idModuloTipo = ? WHERE id = ?";
+				$cordovaSQLite.execute(db, query, [uuid,nombre, clave, descripcion, idModuloTipo, id])
 				.then(
 						function(res) {
 								
@@ -684,6 +684,44 @@ function actualizarLista () {
 			
 			return listaTemp[0];
 			
+		},
+		
+		filtrarPorEspacio: function(idEspacio) {
+			
+			var listaTemp;
+			var q = $q.defer();
+			if(lista) {
+			
+			 listaTemp = lista.filter(function(elem){
+				
+				return elem.idEspacio == idEspacio
+				
+			})
+			
+			q.resolve(listaTemp);
+			
+			} else {
+				
+				actualizarLista().then(function(){
+				
+				 listaTemp = lista.filter(function(elem){
+				
+				return elem.idEspacio == idEspacio
+				
+			})
+			
+			q.resolve(listaTemp);
+				
+			},function(err){
+				
+				q.reject(err)
+				
+			});	
+				
+			}
+			
+			return q.promise;
+			
 		}
 		
 		
@@ -922,7 +960,7 @@ function actualizarLista () {
 
 
 
-				$cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS modulos (id integer primary key AUTOINCREMENT, uuid text, clave text, descripcion text, idModuloTipo text, urlImagen text)").then(
+				$cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS modulos (id integer primary key AUTOINCREMENT, uuid text, nombre text, clave text, descripcion text, idModuloTipo text, urlImagen text)").then(
 			
 		function(res) {
 			

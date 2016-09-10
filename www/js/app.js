@@ -138,6 +138,17 @@ angular.module('starter', ['ionic', 'starter.controllers','starter.directives','
             controllerAs: 'mo' 
         
     })
+    
+    .state('dispositivosEspacio', {
+      url: '/dispositivosEspacio/:idEspacio',
+      //module:'modulos',
+        
+            templateUrl: 'templates/dispositivosEspacio.html',
+            controller: 'DispositivosEspacioCtrl',
+            controllerAs: 'de' 
+        
+    })
+    
 	
 	.state('app.modulo', {
       url: '/modulo/:moduloId',
