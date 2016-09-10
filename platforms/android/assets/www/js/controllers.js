@@ -125,7 +125,7 @@ angular.module('starter.controllers', [])
 })
 
 
-.controller('ModuloAltaCtrl', function($scope, $stateParams,$ionicLoading,$cordovaBluetoothSerial,$ionicModal, $state, $ionicPlatform, $ionicHistory, Modulos) {
+.controller('ModuloAltaCtrl', function($scope, $stateParams,$ionicPopup,$ionicLoading,$cordovaBluetoothSerial,$ionicModal, $state, $ionicPlatform, $ionicHistory, Modulos) {
 //alert("ModuloAltaCtrl");
 	var vm = this;
 	
@@ -135,6 +135,9 @@ angular.module('starter.controllers', [])
   }).then(function(modal) {
     $scope.modalModulos = modal;
   });
+  
+  
+ 
 	
 	$scope.seleccionarModulo= function (item) {
 		
@@ -149,6 +152,8 @@ angular.module('starter.controllers', [])
 	
 	
 	vm.back = function () {
+		
+		
 		$ionicHistory.goBack();
 		};
 	
@@ -157,16 +162,28 @@ angular.module('starter.controllers', [])
 		$scope.modalModulos.show();
 		
 		 $ionicLoading.show({
-      template: 'Loading...'
+      template: 'Buscando Dispositivos...'
     }).then(function(){
        
     
 	$cordovaBluetoothSerial.enable().then(function(res){
 			
 			$cordovaBluetoothSerial.discoverUnpaired().then(function(lista){
-				
-				$scope.listaModulos=lista;
 				$ionicLoading.hide();
+				
+				if(lista.lenght){
+				$scope.listaModulos=lista;
+					}else{
+					
+					var myPopup = $ionicPopup.alert( {
+  title: 'No se encontraron dispositivos', // String. The title of the popup.
+ template: 'Vuelva a internar nuevamente en otro momento', // String (optional). The html template to place in the popup body.
+ 
+}).then(function(res){
+	$scope.modalModulos.hide();
+});	
+				
+					}
 				
 			},function(err){})
 			
@@ -222,8 +239,8 @@ angular.module('starter.controllers', [])
 			vm.selectTipo = undefined;
 			vm.nombre=undefined;
 			
-			vm.displayNombre='Seleccione';
-			vm.displayUuid='Modulo'
+			vm.displayNombre='Seleccione Módulo';
+			vm.displayUuid='Mac Adress'
 			
 		}
 		else
@@ -242,13 +259,13 @@ angular.module('starter.controllers', [])
 			if(ObjetoTemp.nombre){ 
 				vm.displayNombre=ObjetoTemp.nombre
 			}else{
-				vm.displayNombre='Seleccione';
+				vm.displayNombre='Seleccione Módulo';
 			};
 			
 			if(ObjetoTemp.uuid){ 
 				vm.displayUuid=ObjetoTemp.uuid
 			}else{
-				vm.displayNombre='Modulo';
+				vm.displayNombre='Mac Adress';
 			}
 			
 			if(ObjetoTemp.idModuloTipo)			
@@ -524,11 +541,11 @@ var vm = this;
 
 	var vm = this;
 	
-	
-	
 	vm.back= function () {
 		$ionicHistory.goBack();
 		};
+	
+	
 	
 	$ionicModal.fromTemplateUrl('templates/my_modal_imagenes.html', {
     scope: $scope,
@@ -581,6 +598,8 @@ var vm = this;
 
 
 	$scope.$on('$ionicView.enter', function(e) {
+		
+		
 		
 		
 		Espacios.lista().then(function(res){
