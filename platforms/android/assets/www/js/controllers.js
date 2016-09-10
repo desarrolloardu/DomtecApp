@@ -325,7 +325,7 @@ var vm = this;
 	
 })
 
-.controller('DispositivoCtrl', function($scope, $stateParams, Dispositivos, $ionicPlatform, $cordovaBluetoothSerial, $cordovaToast) {
+.controller('DispositivoCtrl', function($scope, $stateParams, Dispositivos, IR, $ionicPlatform, $cordovaBluetoothSerial, $cordovaToast) {
 	var vm =this;
 
 	vm.listar = function(){
@@ -338,6 +338,21 @@ var vm = this;
 	$scope.$on('$ionicView.enter', function(e) {
 		vm.dispositivo = Dispositivos.seleccionarId($stateParams.id);
 		$cordovaToast.show('Conectando a: ' + vm.dispositivo.uuid, 'short', 'center');
+
+		//TEST
+
+		//	IR.insertar("tipo", "marca", "modelo", "funcion", "codigo").then(function(res){
+
+			IR.lista().then(function(res){
+				vm.listaIR = res;	
+		//	})
+		},function(err){alert("error");});
+
+
+		IR.insertarMasivo();
+		// FIN TEST
+
+
 		$cordovaBluetoothSerial.connect(vm.dispositivo.uuid).then(conectExito, error);
 
 	});

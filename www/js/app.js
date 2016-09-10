@@ -57,6 +57,8 @@ angular.module('starter', ['ionic', 'starter.controllers','starter.directives','
 	
 	FactoryDB.inicializarDB().then(function(){
 	  
+     
+
 	   $state.go('app.inicio.espacios');	
 	  
   });

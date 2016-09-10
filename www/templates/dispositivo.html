@@ -56,6 +56,14 @@
 <button class="button icon ion-arrow-down-a" ng-click=""></button>
 <button class="button icon ion-volume-mute" ng-click=""></button>
  
+<div class="list">
+		<a ng-repeat="codigo in di.listaIR" class="item item-thumbnail-left">
+		  <h2>{{codigo.modelo}}</h2>
+		  <h2>{{codigo.funcion}}</h2>
+		</a>
+	</div>
+
+
 </div>
 
   </ion-content>
