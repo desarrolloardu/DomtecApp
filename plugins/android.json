@@ -7,10 +7,19 @@
         "files": {}
     },
     "installed_plugins": {
+        "com.unarin.cordova.beacon": {
+            "PACKAGE_NAME": "com.ionicframework.domtec785741"
+        },
+        "cordova-plugin-bluetooth-serial": {
+            "PACKAGE_NAME": "com.ionicframework.domtec785741"
+        },
         "cordova-plugin-console": {
             "PACKAGE_NAME": "com.ionicframework.domtec785741"
         },
         "cordova-plugin-device": {
+            "PACKAGE_NAME": "com.ionicframework.domtec785741"
+        },
+        "cordova-plugin-file": {
             "PACKAGE_NAME": "com.ionicframework.domtec785741"
         },
         "cordova-plugin-splashscreen": {
@@ -22,22 +31,13 @@
         "cordova-plugin-whitelist": {
             "PACKAGE_NAME": "com.ionicframework.domtec785741"
         },
-        "ionic-plugin-keyboard": {
-            "PACKAGE_NAME": "com.ionicframework.domtec785741"
-        },
-        "com.unarin.cordova.beacon": {
-            "PACKAGE_NAME": "com.ionicframework.domtec785741"
-        },
-        "cordova-plugin-bluetooth-serial": {
-            "PACKAGE_NAME": "com.ionicframework.domtec785741"
-        },
         "cordova-plugin-x-toast": {
             "PACKAGE_NAME": "com.ionicframework.domtec785741"
         },
         "cordova-sqlite-storage": {
             "PACKAGE_NAME": "com.ionicframework.domtec785741"
         },
-        "cordova-plugin-file": {
+        "ionic-plugin-keyboard": {
             "PACKAGE_NAME": "com.ionicframework.domtec785741"
         }
     },

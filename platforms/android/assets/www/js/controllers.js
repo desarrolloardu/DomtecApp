@@ -171,7 +171,7 @@ angular.module('starter.controllers', [])
 			$cordovaBluetoothSerial.discoverUnpaired().then(function(lista){
 				$ionicLoading.hide();
 				
-				if(lista.lenght){
+				if(lista.length){
 				$scope.listaModulos=lista;
 					}else{
 					
@@ -437,7 +437,11 @@ var vm = this;
 		},function(err){alert("error");});
 
 
-		IR.insertarMasivo();
+		IR.insertarMasivo().then(function(res){
+			
+			vm.listaCsv=res
+			
+		},function(err){});
 		// FIN TEST
 
 
